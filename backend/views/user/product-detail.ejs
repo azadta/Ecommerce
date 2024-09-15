@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>E Shop - Bootstrap Ecommerce Template</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="Bootstrap Ecommerce Template" name="keywords">
+        <meta content="Bootstrap Ecommerce Template Free Download" name="description">
+
+        <!-- Favicon -->
+        <link href="img/favicon.ico" rel="icon">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+
+        <!-- CSS Libraries -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="lib/slick/slick.css" rel="stylesheet">
+        <link href="lib/slick/slick-theme.css" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="/css/style.css" rel="stylesheet">
+        <style>
+            .product-detail-top {
+                display: flex;
+                align-items: flex-start; /* Align items at the top */
+            }
+        
+            .product-images img {
+                width: 100%;
+                height: auto;
+            }
+        
+            .product-info {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between; /* Ensures content is spaced out */
+            }
+        
+            .product-name {
+                font-size: 50px;
+            }
+        
+            .product-content {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+        
+            .title {
+                margin-bottom: 20px; /* Space below the title */
+            }
+        
+            .highlights, .specs {
+                margin-top: 20px; /* Space above sections */
+       
+            }
+            .zoomWindow {
+    border: 1px solid #ccc; /* Customize the border of the zoom window */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add shadow for a better look */
+            }
+            .zoomContainer {
+    position: relative; /* Ensure the zoom container is positioned relative to the original image */
+        }
+
+        .zoomWindow {
+    left: calc(100% + 250px) !important; /* Move the zoom window 20px further to the right of the image */
+    top: 0 !important; /* Adjust the top position if necessary */
+    
+             }
+             /* Stylish heart icon */
+.heart-icon {
+    color: #d2c10b; /* Red color for the heart */
+    font-size: 24px; /* Size of the heart */
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out; /* Animation for the heart */
+}
+
+.heart-icon:hover {
+    transform: scale(1.2); /* Slightly enlarge the heart on hover */
+    color: #ff1a1a; /* Darker red on hover */
+}
+
+   
+
+        </style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.min.js"></script>
+        <!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    </head>
+
+    <body>
+        <!-- Top Header Start -->
+        <div class="top-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <div class="logo">
+                            <a href="">
+                                <img src="/img/logo.png" alt="Logo">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="search">
+                            <input type="text" placeholder="Search">
+                            <button><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="user">
+                            <div class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account</a>
+                                <div class="dropdown-menu">
+                                    <a href="#" class="dropdown-item">Login</a>
+                                    <a href="#" class="dropdown-item">Register</a>
+                                </div>
+                            </div>
+                            <div class="cart">
+                                <i class="fa fa-cart-plus"></i>
+                                <span>(0)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Top Header End -->
+        
+        
+        <!-- Header Start -->
+        <div class="header">
+            <div class="container">
+                <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+                    <a href="#" class="navbar-brand">MENU</a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav m-auto">
+                            <a href="/" class="nav-item nav-link active">Home</a>
+                            <a href="product-list.html" class="nav-item nav-link">Products</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                                <div class="dropdown-menu">
+                                    <a href="product-list.html" class="dropdown-item">Product</a>
+                                    <a href="product-detail.html" class="dropdown-item">Product Detail</a>
+                                    <a href="cart.html" class="dropdown-item">Cart</a>
+                                    <a href="wishlist.html" class="dropdown-item">Wishlist</a>
+                                    <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                    <a href="login.html" class="dropdown-item">Login & Register</a>
+                                    <a href="my-account.html" class="dropdown-item">My Account</a>
+                                </div>
+                            </div>
+                            <a href="contact.html" class="nav-item nav-link">Contact Us</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Header End -->
+        <% if (errorMessage) { %>
+            <div style="color: red; background-color: #fdd; border: 1px solid darkred; padding: 10px; border-radius: 5px; text-align: center;" >
+              <%= errorMessage %>
+            </div>
+          <% } %>
+          <% if (message) { %>
+
+            <h4 style="color: rgb(17, 193, 29); text-align: center;"><%= message %></h4>
+        <% } %>
+        
+        
+      <!-- Navbar End -->
+        <!-- Breadcrumbs Start -->
+    <%- include('partials/breadcrumb', { breadcrumbs: breadcrumbs }) %>
+    <!-- Breadcrumbs End -->
+    <!-- Product Detail Start -->
+<div class="product-detail">
+    <div class="container">
+        <div class="row">
+            <!-- Product Images and Details -->
+            <div class="col-lg-9">
+                <div class="row align-items-start product-detail-top">
+                    <div class="col-md-5 product-images">
+                        <div class="product-slider-single">
+                            <% product.images.forEach(image => { %>
+                                <img  src="/uploads/<%= image %>" alt="Product Image" class="product-image zoom-image">
+                            <% }) %>
+                        </div>
+                    </div>
+                    <div class="col-md-7 product-info">
+                        <div class="product-content">
+                          
+                            <div class="title" style="display: flex; align-items: center; justify-content: space-between;">
+                                <h2 class="product-name" style="font-size: 40px; color: rgb(131, 16, 4); font-weight: 600; margin: 0;"><%= product.name %></h2>
+                                <div class="action">
+                                    <form action="/addItemsToWishlist" method="POST" style="margin: 20px;;">
+                                        <input type="hidden" name="productId" value="<%= product._id %>">
+                                        <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
+                                            <i class="fa fa-heart heart-icon" style="background-color:#3F69AA; padding: 5px;"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <p style="font-weight: bold;">Ratings: <%= product.ratings %></p>
+                            <div class="rating">
+                                <% for (let i = 0; i < product.ratings; i++) { %>
+                                    <i class="fa fa-star"></i>
+                                <% } %>
+                                <% for (let i = product.ratings; i < 5; i++) { %>
+                                    <i class="fa fa-star-o"></i>
+                                <% } %>
+                            </div>
+                            <p style="color:rgb(186, 100, 9);">Availability: <%= product.stock > 0 ? 'In Stock' : 'Out of Stock' %></p>
+                            <% if (product.stock > 0) { %>
+                                <h5 style="color: rgb(186, 100, 9);">Only Left: <%= product.stock %></h5>
+                            <% } %>
+                            <div class="price">
+                                <% if (discountPercentage > 0) { %>
+                                    <div style="font-size: 25px;">
+                                        <!-- Show the original price with a strikethrough -->
+                                        <p class="original-price" style="color: #1309c8;">Actual Price: Rs <%= product.price.toFixed(2) %></p>
+                            
+                                        <!-- Display the offer details -->
+                                        <% if (offerName) { %>
+                                            <p class="offer-details" style="font-size: 25px; color: #848412;">
+                                                <%= offerName %>: <%= discountPercentage %>% off
+                                            </p>
+                                        <% } %>
+                            
+                                        <!-- Show the net price after discount -->
+                                        <p class="discounted-price" style="font-size: 29px; color: rgb(50, 136, 71);">Net Price: Rs <%= netPrice.toFixed(2) %></p>
+                                    </div>
+                                <% } else { %>
+                                    <div style="font-size: 25px;">
+                                        <!-- Show the price without any discount -->
+                                        <p class="price">Rs <%= product.price.toFixed(2) %></p>
+                                    </div>
+                                <% } %>
+                            </div>
+                            
+                            
+                            
+
+                            <form method="POST" action="/addToCart">
+                                <div class="quantity">
+                                    <h4>Quantity:</h4>
+                                    <div class="qty">
+                                        <button type="button" class="btn-minus" onclick="updateQuantity(-1)"><i class="fa fa-minus"></i></button>
+                                        <input type="number" name="quantity" id="quantity" value="1" readonly>
+                                        <button type="button" class="btn-plus" onclick="updateQuantity(1)"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                
+                                <input type="hidden" name="productId" value="<%= product._id %>">
+                                <div class="action">
+                                    <button type="submit" class="btn btn-primary" >Add To Cart</button>
+                                 
+                                    <a href="#"><i class="fa fa-search"></i></a>
+                                </div>
+                            </form>
+                          
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+                           
+                           
+                             
+                                
+            
+            <!-- Highlights and Specifications Column -->
+            <div class="col-lg-3">
+                <div class="highlights-specifications">
+                    <div class="highlights">
+                        <h4>Product Highlights</h4>
+                        <ul>
+                            <% product.highlights.split('\n').forEach(highlight => { %>
+                                <li><%= highlight %></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+
+                    <div class="specs">
+                        <h4>Product Specifications</h4>
+                        <ul>
+                            <% product.specifications.split('\n').forEach(specification => { %>
+                                <li><%= specification %></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product Detail Bottom -->
+        <div class="row product-detail-bottom">
+            <div class="col-lg-12">
+                <ul class="nav nav-pills nav-justified">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="pill" href="#description">Description</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="pill" href="#specification">Specification</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="pill" href="#reviews">Reviews (<%= product.numOfReviews %>)</a>
+                    </li>
+                </ul>
+            
+                <div class="tab-content">
+                    <div id="description" class="container tab-pane active"><br>
+                        <h4>Product Description</h4>
+                        <p><%= product.description %></p>
+                    </div>
+                    <div id="specification" class="container tab-pane fade"><br>
+                        <h4>Product Specification</h4>
+                        <ul>
+                       
+                            <li><%= product.specifications %></li>
+                        </ul>
+                    </div>
+                    <div id="reviews" class="container tab-pane fade"><br>
+                        <div class="reviews-submitted">
+                            <% if (product.reviews && product.reviews.length > 0) { %>
+                                <% product.reviews.forEach(review => { %>
+                                    <div class="reviewer"><%= review.name %> <span><%= new Date(review.createdAt).toLocaleDateString() %></span></div>
+                                    <div class="rating">
+                                        <% for (let i = 0; i < review.rating; i++) { %>
+                                            <i class="fa fa-star"></i>
+                                        <% } %>
+                                        <% for (let i = review.rating; i < 5; i++) { %>
+                                            <i class="fa fa-star-o"></i>
+                                        <% } %>
+                                    </div>
+                                    <p><%= review.comment %></p>
+                                <% }) %>
+                            <% } else { %>
+                                <p>No reviews yet.</p>
+                            <% } %>
+                        </div>
+                        <form action="/reviews?productId=<%= product._id %>&_method=delete" method="post">
+                            <div class="col-sm-12">
+                                <button type="submit" style="padding: 5px 10px; font-size: 12px;">Delete Review</button>
+                            </div>
+                        </form>
+                        <br>
+                        <br>
+
+                        
+
+                          
+                        <div class="reviews-submit">
+                            <h4>Give Your Review:</h4>
+                            <form action="/reviews?_method=put" method="post">
+                                <div class="row form">
+                                    <div class="col-sm-6">
+                                        <input type="number" name="rating" min="1" max="5" placeholder="Rating" required>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="hidden" name="productId" value="<%= product._id %>">
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <textarea placeholder="Review" name="comment" required></textarea>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <button type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Related Products Section -->
+        <div class="container">
+            <div class="section-header">
+                <h3>Related Products</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra at massa sit amet ultricies. Nullam consequat, mauris non interdum cursus</p>
+            </div>
+        </div>
+          
+        <div class="row align-items-center product-slider product-slider-3">
+            <% relatedProducts.forEach(product => { %>
+                <div class="col-lg-3">
+                    <div class="product-item">
+                        <div class="product-image">
+                            <a href="/singleProductDetail/<%= product._id %>">
+                                <img src="/uploads/<%= product.images[0] %>" alt="Product Image">
+                            </a>
+                            
+                        </div>
+                        <div class="product-content">
+                            <div class="title"><a href="/product-detail/<%= product._id %>"><span style="color: brown; font-size: 20px;"><%= product.name %></span></a></div>
+                            <div class="rating">
+                                <% for (let i = 0; i < 5; i++) { %>
+                                    <% if (i < product.ratings) { %>
+                                        <i class="fa fa-star"></i>
+                                    <% } else { %>
+                                        <i class="fa fa-star-o"></i>
+                                    <% } %>
+                                <% } %>
+                            </div>
+                            <div class="price">
+                                <p style="font-size: 16px;">Actual Price: Rs <%= product.price.toFixed(2) %></p>
+                                <% if (product.offers && product.offers.length > 0) { %>
+                                    <% const offer = product.offers[0]; %>
+                                    <% const discountPercentage = offer.discountPercentage || 0; %>
+                                    <% const discountAmount = (product.price * discountPercentage / 100).toFixed(2); %>
+                                    <% const netPrice = (product.price - (product.price * discountPercentage / 100)).toFixed(2); %>
+                                    <p style="font-size: 25px;" hidden>Discount Amount: Rs <%= discountAmount %></p>
+                                    <p style="color: green; font-size: 18px;">Net Price: Rs <%= netPrice %></p>
+                                <% } else { %>
+                                    <p>No discounts available</p>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+        
+    </div>
+</div>
+<!-- Product Detail End -->
+
+
+        
+        
+        <!-- Footer Start -->
+        <div class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-widget">
+                            <h1>E Shop</h1>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin rutrum massa. Suspendisse sollicitudin rutrum massa. Vestibulum porttitor, metus sed pretium elementum, nisi nibh sodales quam, non lobortis neque felis id mauris.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-widget">
+                            <h3 class="title">Useful Pages</h3>
+                            <ul>
+                                <li><a href="product.html">Product</a></li>
+                                <li><a href="product-detail.html">Product Detail</a></li>
+                                <li><a href="cart.html">Cart</a></li>
+                                <li><a href="checkout.html">Checkout</a></li>
+                                <li><a href="login.html">Login & Register</a></li>
+                                <li><a href="my-account.html">My Account</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-widget">
+                            <h3 class="title">Quick Links</h3>
+                            <ul>
+                                <li><a href="product.html">Product</a></li>
+                                <li><a href="cart.html">Cart</a></li>
+                                <li><a href="checkout.html">Checkout</a></li>
+                                <li><a href="login.html">Login & Register</a></li>
+                                <li><a href="my-account.html">My Account</a></li>
+                                <li><a href="wishlist.html">Wishlist</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-widget">
+                            <h3 class="title">Get in Touch</h3>
+                            <div class="contact-info">
+                                <p><i class="fa fa-map-marker"></i>123 E Shop, Los Angeles, CA, USA</p>
+                                <p><i class="fa fa-envelope"></i>email@example.com</p>
+                                <p><i class="fa fa-phone"></i>+123-456-7890</p>
+                                <div class="social">
+                                    <a href=""><i class="fa fa-twitter"></i></a>
+                                    <a href=""><i class="fa fa-facebook"></i></a>
+                                    <a href=""><i class="fa fa-linkedin"></i></a>
+                                    <a href=""><i class="fa fa-instagram"></i></a>
+                                    <a href=""><i class="fa fa-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row payment">
+                    <div class="col-md-6">
+                        <div class="payment-method">
+                            <p>We Accept:</p>
+                            <img src="/img/payment-method.png" alt="Payment Method" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="payment-security">
+                            <p>Secured By:</p>
+                            <img src="/img/godaddy.svg" alt="Payment Security" />
+                            <img src="/img/norton.svg" alt="Payment Security" />
+                            <img src="/img/ssl.svg" alt="Payment Security" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+
+        
+        <!-- Footer Bottom Start -->
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 copyright">
+                        <p>Copyright &copy; <a href="https://htmlcodex.com">HTML Codex</a>. All Rights Reserved</p>
+                    </div>
+
+                    <div class="col-md-6 template-by">
+                        <p>Template By <a href="https://htmlcodex.com">HTML Codex</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer Bottom End -->
+        
+        
+        <!-- Back to Top -->
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+        
+        <!-- JavaScript Libraries -->
+    
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="/lib/easing/easing.min.js"></script>
+        <script src="/lib/slick/slick.min.js"></script>
+
+        
+        <!-- Template Javascript -->
+        <script src="/js/main.js"></script>
+        <script>
+            function updateQuantity(change) {
+                // Get the quantity input element
+                const quantityInput = document.getElementById('quantity');
+                
+                // Parse the current quantity value
+                let currentQuantity = parseInt(quantityInput.value);
+                
+                // Calculate new quantity
+                let newQuantity = currentQuantity + change;
+        
+                // Ensure quantity is at least 1
+                if (newQuantity < 1) {
+                    newQuantity = 1;
+                }
+        
+                // Update the quantity input value
+                quantityInput.value = newQuantity;
+            }
+        </script>
+        <script>
+ $(document).ready(function() {
+    $('.zoom-image').elevateZoom({
+        zoomType: "window",          // Use "window" to create a zoom window
+        cursor: "crosshair",
+        zoomWindowFadeIn: 500,
+        zoomWindowFadeOut: 750,
+        zoomWindowPosition: 1,       // Position the zoom window to the right side
+        zoomWindowWidth: 500,        // Width of the zoom window
+        zoomWindowHeight: 500,       // Height of the zoom window
+        borderSize: 2,               // Set border size
+       borderColour: "#FFD700",    // Set the border color (e.g., red)
+       zoomLens: true,
+       lensColour: '#ffffff',
+       lensShape: "square", // or "square",
+      
+      
+    });
+});
+
+        </script>
+       
+        
+        <!-- Include jQuery -->
+
+<!-- Include elevateZoom -->
+
+
+        
+    </body>
+
+   
+
+
+
+
+
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>E Shop - Bootstrap Ecommerce Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Bootstrap Ecommerce Template" name="keywords">
+    <meta content="Bootstrap Ecommerce Template Free Download" name="description">
+
+    <!-- Favicon -->
+    <link href="/img/favicon.ico" rel="icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+
+    <!-- CSS Libraries -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/lib/slick/slick.css" rel="stylesheet">
+    <link href="/lib/slick/slick-theme.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+
+    <!-- Inline Styles -->
+    <style>
+        .btn-google {
+            display: inline-block;
+            color: #444;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+        .btn-google:hover {
+            background-color: #f1f1f1;
+        }
+        .btn-google img {
+            vertical-align: middle;
+            margin-right: 8px;
+            background: white; /* Attempt to cover background */
+        }
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60vh;
+        }
+        .login-box {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Header Start -->
+    <div class="top-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <div class="logo">
+                        <a href="">
+                            <img src="/img/logo.png" alt="Logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="search">
+                        <input type="text" placeholder="Search">
+                        <button><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="user">
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account</a>
+                            <div class="dropdown-menu">
+                                <a href="/me" class="dropdown-item">Profile</a>
+                                <a href="/logout" class="dropdown-item">Logout</a>
+                            </div>
+                        </div>
+                        <div class="cart">
+                            <i class="fa fa-cart-plus"></i>
+                            <span>(0)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Top Header End -->
+    
+    <!-- Header Start -->
+    <div class="header">
+        <div class="container">
+            <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+                <a href="#" class="navbar-brand">MENU</a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                    <div class="navbar-nav m-auto">
+                        <a href="/" class="nav-item nav-link active"></a>
+                        <a href="/products" class="nav-item nav-link">Products</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                            <div class="dropdown-menu">
+                                <a href="/products" class="dropdown-item">Product</a>
+                                <a href="/product-detail" class="dropdown-item">Product Detail</a>
+                                <a href="/cart" class="dropdown-item">Cart</a>
+                                <a href="/wishlist" class="dropdown-item">Wishlist</a>
+                                <a href="/checkout" class="dropdown-item">Checkout</a>
+                                <a href="/register" class="dropdown-item">Login & Register</a>
+                                <a href="/my-account" class="dropdown-item">My Account</a>
+                            </div>
+                        </div>
+                        <a href="/contact" class="nav-item nav-link">Contact Us</a>
+                        <a href="/adminPanel" class="nav-item nav-link">Admin</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Header End -->
+
+    <!-- Login Start -->
+    <div class="container login-container">
+        <div class="login-box">
+            <h1>Login</h1>
+            <a href="/auth/google" class="btn-google">
+                <img src="/img/google-logo.png" alt="Google logo" width="20" height="20" >
+                Sign in with Google
+            </a>
+        </div>
+    </div>
+    <!-- Login End -->
+    
+    <!-- Footer Start -->
+    <div class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-widget">
+                        <h1>E Shop</h1>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin rutrum massa. Suspendisse sollicitudin rutrum massa. Vestibulum porttitor, metus sed pretium elementum, nisi nibh sodales quam, non lobortis neque felis id mauris.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-widget">
+                        <h3 class="title">Useful Pages</h3>
+                        <ul>
+                            <li><a href="/products">Product</a></li>
+                            <li><a href="/product-detail">Product Detail</a></li>
+                            <li><a href="/cart">Cart</a></li>
+                            <li><a href="/checkout">Checkout</a></li>
+                            <li><a href="/register">Login & Register</a></li>
+                            <li><a href="/my-account">My Account</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-widget">
+                        <h3 class="title">Quick Links</h3>
+                        <ul>
+                            <li><a href="/products">Product</a></li>
+                            <li><a href="/cart">Cart</a></li>
+                            <li><a href="/checkout">Checkout</a></li>
+                            <li><a href="/register">Login & Register</a></li>
+                            <li><a href="/my-account">My Account</a></li>
+                            <li><a href="/wishlist">Wishlist</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-widget">
+                        <h3 class="title">Get in Touch</h3>
+                        <div class="contact-info">
+                            <p><i class="fa fa-map-marker"></i>123 E Shop, Los Angeles, CA, USA</p>
+                            <p><i class="fa fa-envelope"></i>email@example.com</p>
+                            <p><i class="fa fa-phone"></i>+123-456-7890</p>
+                            <div class="social">
+                                <a href=""><i class="fa fa-twitter"></i></a>
+                                <a href=""><i class="fa fa-facebook"></i></a>
+                                <a href=""><i class="fa fa-linkedin"></i></a>
+                                <a href=""><i class="fa fa-instagram"></i></a>
+                                <a href=""><i class="fa fa-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row payment">
+                <div class="col-md-6">
+                    <div class="payment-method">
+                        <h3>We Accept:</h3>
+                        <img src="/img/payment-method.png" alt="Payment Method">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="payment-security">
+                        <h3>Secured By:</h3>
+                        <img src="/img/godaddy.svg" alt="Payment Security">
+                        <img src="/img/norton.svg" alt="Payment Security">
+                        <img src="/img/ssl.svg" alt="Payment Security">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+    
+    <!-- Footer Bottom Start -->
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 copyright">
+                    <p>Copyright © 2024 <a href="#">Your Site Name</a>. All Rights Reserved</p>
+                </div>
+
+                <div class="col-md-6 template-by">
+                    <p>Template By <a href="#">Bootstrap Templates</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer Bottom End -->       
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/easing/easing.min.js"></script>
+    <script src="/lib/slick/slick.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="/js/main.js"></script>
+</body>
+</html>

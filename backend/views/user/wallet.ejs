@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>E Shop - Bootstrap Ecommerce Template</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="Bootstrap Ecommerce Template" name="keywords">
+        <meta content="Bootstrap Ecommerce Template Free Download" name="description">
+
+        <!-- Favicon -->
+        <link href="img/favicon.ico" rel="icon">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+
+        <!-- CSS Libraries -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="lib/slick/slick.css" rel="stylesheet">
+        <link href="lib/slick/slick-theme.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+        <!-- Template Stylesheet -->
+        <link href="/css/style.css" rel="stylesheet">
+   
+          <style>
+    .wallet-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .wallet-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .wallet-emblem {
+        width: 50px;
+        height: 50px;
+        margin-right: 15px;
+    }
+
+    .wallet-title {
+        font-size: 2.5em;
+        color: #333;
+    }
+
+    .wallet-balance {
+        margin-bottom: 30px;
+        font-size: 1.5em;
+        color: #28a745;
+        text-align: center;
+    }
+
+    .wallet-balance span {
+        font-weight: bold;
+    }
+
+    .transaction-title {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        color: #007bff;
+        text-align: center;
+    }
+
+    .transaction-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .transaction-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .transaction-table th,
+    .transaction-table td {
+        padding: 10px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .transaction-table th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .transaction-table td.credit {
+        color: #28a745;
+    }
+
+    .transaction-table td.debit {
+        color: #dc3545;
+    }
+
+    .transaction-table tr:hover {
+        background-color: #f1f1f1;
+    }
+    .wallet-emblem {
+    font-size: 60px; /* Adjust size as needed */
+    color: #c7b706; /* Adjust color as needed */
+}
+.transaction-table tbody tr:nth-child(odd) {
+    background-color: #efcaca !important;
+}
+
+.transaction-table tbody tr:nth-child(even) {
+    background-color: #ffffff !important;
+}
+
+
+</style>
+
+   
+
+        </style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.min.js"></script>
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    </head>
+
+    <body>
+        <!-- Top Header Start -->
+        <div class="top-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <div class="logo">
+                            <a href="">
+                                <img src="/img/logo.png" alt="Logo">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="search">
+                            <input type="text" placeholder="Search">
+                            <button><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="user">
+                            <div class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account</a>
+                                <div class="dropdown-menu">
+                                    <a href="#" class="dropdown-item">Login</a>
+                                    <a href="#" class="dropdown-item">Register</a>
+                                </div>
+                            </div>
+                            <div class="cart">
+                                <i class="fa fa-cart-plus"></i>
+                                <span>(0)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Top Header End -->
+        
+        
+        <!-- Header Start -->
+        <div class="header">
+            <div class="container">
+                <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+                    <a href="#" class="navbar-brand">MENU</a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav m-auto">
+                            <a href="/" class="nav-item nav-link active">Home</a>
+                            <a href="product-list.html" class="nav-item nav-link">Products</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                                <div class="dropdown-menu">
+                                    <a href="product-list.html" class="dropdown-item">Product</a>
+                                    <a href="product-detail.html" class="dropdown-item">Product Detail</a>
+                                    <a href="cart.html" class="dropdown-item">Cart</a>
+                                    <a href="wishlist.html" class="dropdown-item">Wishlist</a>
+                                    <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                    <a href="login.html" class="dropdown-item">Login & Register</a>
+                                    <a href="my-account.html" class="dropdown-item">My Account</a>
+                                </div>
+                            </div>
+                            <a href="contact.html" class="nav-item nav-link">Contact Us</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Header End -->
+        <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+            <div style="color: red; background-color: #fdd; border: 1px solid darkred; padding: 10px; border-radius: 5px; text-align: center;">
+                <%= errorMessage %>
+            </div>
+        <% } %>
+        
+        
+        <% if (typeof wallet !== 'undefined' && wallet) { %>
+            <div class="wallet-container">
+                <div class="wallet-emblem">
+                    <i class="fa fa-wallet cart-icon"></i>
+                    <h2 style="color: #dac20b;">Wallet</h2>
+                </div>
+                <div class="wallet-balance">
+                    <p>Balance: <span>Rs <%= wallet.balance.toFixed(2) %></span></p>
+                </div>
+        
+                <h2 class="transaction-title">Transaction History</h2>
+                <div class="transaction-table-wrapper">
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% wallet.transactions.forEach(transaction => { %>
+                                <tr>
+                                    <td><%= new Date(transaction.date).toLocaleDateString() %></td>
+                                    <td class="<%= transaction.type === 'credit' ? 'credit' : 'debit' %>">
+                                        <%= transaction.type === 'credit' ? 'Credit' : 'Debit' %>
+                                    </td>
+                                    <td>Rs <%= transaction.amount.toFixed(2) %></td>
+                                    <td><%= transaction.description %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <% } %>
+        
+
+
+  <!-- Footer Start -->
+<div class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-widget">
+                    <h1>E Shop</h1>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin rutrum massa. Suspendisse sollicitudin rutrum massa. Vestibulum porttitor, metus sed pretium elementum, nisi nibh sodales quam, non lobortis neque felis id mauris.
+                    </p>
+                </div>
+            </div>
+    
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-widget">
+                    <h3 class="title">Useful Pages</h3>
+                    <ul>
+                        <li><a href="product.html">Product</a></li>
+                        <li><a href="product-detail.html">Product Detail</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="checkout.html">Checkout</a></li>
+                        <li><a href="login.html">Login & Register</a></li>
+                        <li><a href="my-account.html">My Account</a></li>
+                    </ul>
+                </div>
+            </div>
+    
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-widget">
+                    <h3 class="title">Quick Links</h3>
+                    <ul>
+                        <li><a href="product.html">Product</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="checkout.html">Checkout</a></li>
+                        <li><a href="login.html">Login & Register</a></li>
+                        <li><a href="my-account.html">My Account</a></li>
+                        <li><a href="wishlist.html">Wishlist</a></li>
+                    </ul>
+                </div>
+            </div>
+    
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-widget">
+                    <h3 class="title">Get in Touch</h3>
+                    <div class="contact-info">
+                        <p><i class="fa fa-map-marker"></i>123 E Shop, Los Angeles, CA, USA</p>
+                        <p><i class="fa fa-envelope"></i>email@example.com</p>
+                        <p><i class="fa fa-phone"></i>+123-456-7890</p>
+                        <div class="social">
+                            <a href=""><i class="fa fa-twitter"></i></a>
+                            <a href=""><i class="fa fa-facebook"></i></a>
+                            <a href=""><i class="fa fa-linkedin"></i></a>
+                            <a href=""><i class="fa fa-instagram"></i></a>
+                            <a href=""><i class="fa fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row payment">
+            <div class="col-md-6">
+                <div class="payment-method">
+                    <p>We Accept:</p>
+                    <img src="/img/payment-method.png" alt="Payment Method" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="payment-security">
+                    <p>Secured By:</p>
+                    <img src="/img/godaddy.svg" alt="Payment Security" />
+                    <img src="/img/norton.svg" alt="Payment Security" />
+                    <img src="/img/ssl.svg" alt="Payment Security" />
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- Footer End -->
+    
+    
+    <!-- Footer Bottom Start -->
+    <div class="footer-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 copyright">
+                <p>Copyright &copy; <a href="https://htmlcodex.com">HTML Codex</a>. All Rights Reserved</p>
+            </div>
+    
+            <div class="col-md-6 template-by">
+                <p>Template By <a href="https://htmlcodex.com">HTML Codex</a></p>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- Footer Bottom End -->
+    
+    
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+    
+    
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/easing/easing.min.js"></script>
+    <script src="/lib/slick/slick.min.js"></script>
+    
+    
+    <!-- Template Javascript -->
+    <script src="/js/main.js"></script>
+    
+    <script>
+    // Function to reset the page to 1 and submit the form when sorting is changed
+    function resetPageAndSubmit() {
+      const sortSelect = document.getElementById('sortSelect');
+      const selectedSort = sortSelect.options[sortSelect.selectedIndex].value;
+      const sortOrder = document.getElementById('sortOrder');
+      
+      // If sorting by "price" or "alphabetical", toggle the sort order between ascending and descending
+      if (selectedSort === 'price' || selectedSort === 'alphabetical') {
+        // Toggle between ascending (1) and descending (-1) order
+        sortOrder.value = sortOrder.value === '1' ? '-1' : '1';
+      } else {
+        // For other sorting options, reset to default descending order
+        sortOrder.value = '-1';
+      }
+    
+      // Reset the page number to 1 when sorting is changed
+      document.getElementById('pageInput').value = 1;
+    
+      // Submit the form to apply the selected sorting and reset the page number
+      document.getElementById('sortForm').submit();
+    }
+    </script>
+    
+    
+    </body>
+    </html>
+    

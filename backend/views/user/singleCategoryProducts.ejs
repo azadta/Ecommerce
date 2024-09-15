@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>E Shop - Bootstrap Ecommerce Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Bootstrap Ecommerce Template" name="keywords">
+    <meta content="Bootstrap Ecommerce Template Free Download" name="description">
+
+    <!-- Favicon -->
+    <link href="/img/favicon.ico" rel="icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+
+    <!-- CSS Libraries -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/lib/slick/slick.css" rel="stylesheet">
+    <link href="/lib/slick/slick-theme.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+    <style>
+        .navbar {
+            background-color: #ffffff; /* White background */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional shadow for better separation */
+        }
+        .navbar-nav .nav-link {
+            color: #333333; /* Dark text color */
+        }
+        .navbar-nav .nav-link:hover {
+            color: #0056b3; /* Blue color on hover */
+        }
+        .navbar-nav {
+            text-align: center; /* Center-align the navbar items */
+        }
+        .category-image {
+            max-width: 100px; /* Adjust size as needed */
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+         /* Styling the form container */
+   #sortForm {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+  }
+
+  /* Styling the label */
+  #sortForm label {
+    font-weight: bold;
+    font-size: 16px;
+    margin-right: 10px;
+    color: rgb(163, 5, 5);
+  }
+
+  /* Styling the select dropdown */
+  #sortSelect {
+    padding: 8px;
+    font-size: 14px;
+    border: 2px solid #12a51c;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  #sortSelect:focus {
+    border-color: #007bff;
+  }
+  .featured-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 0, 0, .4); /* Red background with transparency */
+  color: #fff; /* White text color */
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+ 
+  transform-origin: top left; /* Rotate from the top left corner */
+  border-radius: 5px; /* Optional: rounded corners */
+  z-index: 10; /* Ensure label is above the image */
+
+}
+
+    </style>
+</head>
+
+<body>
+    <!-- Top Header Start -->
+    <div class="top-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <div class="logo">
+                        <a href="/">
+                            <img src="/img/logo.png" alt="Logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="search">
+                        <input type="text" placeholder="Search">
+                        <button><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="user">
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account</a>
+                            <div class="dropdown-menu">
+                                <a href="/me" class="dropdown-item">Profile</a>
+                                <a href="/logout" class="dropdown-item">Logout</a>
+                            </div>
+                        </div>
+                        <div class="cart">
+                            <i class="fa fa-cart-plus"></i>
+                            <span>(0)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Top Header End -->
+    
+    <!-- Header Start -->
+    <div class="header">
+        <div class="container">
+            <nav class="navbar navbar-expand-md">
+                <a href="/" class="navbar-brand">Home</a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="/" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/product-list" class="nav-link">Products</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                            <div class="dropdown-menu">
+                                <a href="/cart" class="dropdown-item">Cart</a>
+                                <a href="/wishlist" class="dropdown-item">Wishlist</a>
+                                <a href="/checkout" class="dropdown-item">Checkout</a>
+                                <a href="/register" class="dropdown-item">Login & Register</a>
+                                <a href="/my-account" class="dropdown-item">My Account</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/contact" class="nav-link">Contact Us</a>
+                        </li>
+                   
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Header End -->
+
+        <!-- Breadcrumbs Start -->
+    <%- include('partials/breadcrumb', { breadcrumbs: breadcrumbs }) %>
+    <!-- Breadcrumbs End -->
+    
+ 
+
+    <!-- Feature Start -->
+    <div class="feature">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 feature-col">
+                    <div class="feature-content">
+                        <i class="fa fa-shield"></i>
+                        <h2>Trusted Shopping</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 feature-col">
+                    <div class="feature-content">
+                        <i class="fa fa-shopping-bag"></i>
+                        <h2>Quality Product</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 feature-col">
+                    <div class="feature-content">
+                        <i class="fa fa-truck"></i>
+                        <h2>Worldwide Delivery</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 feature-col">
+                    <div class="feature-content">
+                        <i class="fa fa-phone"></i>
+                        <h2>Telephone Support</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Feature End -->
+    
+    <!-- Product List Start -->
+    <div class="product-view">
+        <form id="sortForm" action="" method="GET">
+            <!-- Preserve the current page number in the form submission -->
+            <input type="hidden" name="page" id="pageInput" value="<%= currentPage %>">
+            
+            <!-- Sorting options dropdown -->
+            <div class="sorting-container">
+              <label for="sortSelect">Sort by:</label>
+              <select name="sort" id="sortSelect" class="form-control" onchange="resetPageAndSubmit()">
+                <option value="newest" <%= sort === 'newest' ? 'selected' : '' %>>Newest</option>
+                <option value="price" <%= sort === 'price' && order === '-1' ? 'selected' : '' %>>Price: High to Low</option>
+                <option value="price" <%= sort === 'price' && order === '1' ? 'selected' : '' %>>Price: Low to High</option>
+                <option value="popularity" <%= sort === 'popularity' ? 'selected' : '' %>>Popularity</option>
+                <option value="ratings" <%= sort === 'ratings' ? 'selected' : '' %>>Ratings</option>
+                <option value="alphabetical" <%= sort === 'alphabetical' && order === '1' ? 'selected' : '' %>>Name: A to Z</option>
+                <option value="alphabetical" <%= sort === 'alphabetical' && order === '-1' ? 'selected' : '' %>>Name: Z to A</option>
+                <option value="featured" <%= sort === 'featured' ? 'selected' : '' %>>Featured</option>
+              </select>
+            </div>
+            
+            <!-- Hidden input for order, updated dynamically by JavaScript -->
+            <input type="hidden" name="order" id="sortOrder" value="<%= order %>">
+          </form>
+
+          <form id="categoryForm" method="GET" action="/singleCategoryProducts">
+    <!-- Label for category selection -->
+    <label for="categorySelect" style="color: rgb(175, 7, 7);">Category:</label>
+    <select name="category" id="categorySelect" onchange="navigateToCategory()">
+        <!-- Option to display the selected category at the top -->
+        <% if (selectedCategory) { 
+            const selectedCategoryName = categories.find(cat => cat._id.toString() === selectedCategory.toString())?.name;
+            if (selectedCategoryName) { %>
+                <option value="<%= selectedCategory %>" selected><%= selectedCategoryName %></option>
+                <option disabled>──────────</option>
+        <% } } %>
+
+        <!-- List all categories -->
+        <% categories.forEach(category => { %>
+            <option value="<%= category._id %>" <%= selectedCategory === category._id ? 'selected' : '' %>>
+                <%= category.name %>
+            </option>
+        <% }) %>
+    </select>
+</form>
+
+          
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <% products.forEach(product => { %>
+                                  
+                                <div class="col-lg-4">
+                                    <div class="product-item">
+                                        <div class="product-image">
+                                            <% if (product.isFeatured) { %>
+                                                <div class="featured-label">Featured Product</div>
+                                            <% } %>
+                                            <a href="/singleProductDetail/<%= product._id %>">
+                                                <img src="/uploads/<%= product.images[0] %>" alt="Product Image">
+                                            </a>
+                                            <div class="product-action">
+                                                <a href="#"><i class="fa fa-cart-plus"></i></a>
+                                                <a href="#"><i class="fa fa-heart"></i></a>
+                                                <a href="#"><i class="fa fa-search"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <div class="title">
+                                                <a href="#" style="font-size: 24px;"><%= product.name %></a>
+                                            </div>
+                                            <% if (product.offers && product.offers.length > 0) { %>
+                                                <% 
+                                                    const firstOffer = product.offers[0];
+                                                    const discountAmount = (product.price * (firstOffer.discountPercentage / 100)).toFixed(2);
+                                                    const discountedPrice = (product.price - discountAmount).toFixed(2);
+                                                %>
+                                                <div class="price" style="font-size: 25px">
+                                                    <span class="original-price" style="text-decoration: line-through; color: #888;">Rs <%= product.price.toFixed(2) %></span>
+                                                    <span class="discounted-price" style="margin-left: 10px; color: rgb(20, 216, 69);"> Rs  <%= discountedPrice %></span>
+                                                </div>
+                                            <% } else { %>
+                                                <div class="price" style="font-size: 25px">Rs <%= product.price.toFixed(2) %></div>
+                                            <% } %>
+                                        </div>
+                                        <div class="title">
+                                           <p style="color: goldenrod; font-weight: 600;">Stock Left: <%= product.stock %></p> 
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <% if (currentPage > 1) { %>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=<%= currentPage - 1 %>" tabindex="-1">Previous</a>
+                                    </li>
+                                    <% } else { %>
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                    </li>
+                                    <% } %>
+                                    <% for (let i = 1; i <= totalPages; i++) { %>
+                                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                                    </li>
+                                    <% } %>
+                                    <% if (currentPage < totalPages) { %>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=<%= currentPage + 1 %>">Next</a>
+                                    </li>
+                                    <% } else { %>
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                    <% } %>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Product List End -->
+    
+  <!-- Footer Start -->
+  <div class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-widget">
+                    <h1>E Shop</h1>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin rutrum massa. Suspendisse sollicitudin rutrum massa. Vestibulum porttitor, metus sed pretium elementum, nisi nibh sodales quam, non lobortis neque felis id mauris.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-widget">
+                    <h3 class="title">Useful Pages</h3>
+                    <ul>
+                        <li><a href="product.html">Product</a></li>
+                        <li><a href="product-detail.html">Product Detail</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="checkout.html">Checkout</a></li>
+                        <li><a href="login.html">Login & Register</a></li>
+                        <li><a href="my-account.html">My Account</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-widget">
+                    <h3 class="title">Quick Links</h3>
+                    <ul>
+                        <li><a href="product.html">Product</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="checkout.html">Checkout</a></li>
+                        <li><a href="login.html">Login & Register</a></li>
+                        <li><a href="my-account.html">My Account</a></li>
+                        <li><a href="wishlist.html">Wishlist</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-widget">
+                    <h3 class="title">Get in Touch</h3>
+                    <div class="contact-info">
+                        <p><i class="fa fa-map-marker"></i>123 E Shop, Los Angeles, CA, USA</p>
+                        <p><i class="fa fa-envelope"></i>email@example.com</p>
+                        <p><i class="fa fa-phone"></i>+123-456-7890</p>
+                        <div class="social">
+                            <a href=""><i class="fa fa-twitter"></i></a>
+                            <a href=""><i class="fa fa-facebook"></i></a>
+                            <a href=""><i class="fa fa-linkedin"></i></a>
+                            <a href=""><i class="fa fa-instagram"></i></a>
+                            <a href=""><i class="fa fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row payment">
+            <div class="col-md-6">
+                <div class="payment-method">
+                    <p>We Accept:</p>
+                    <img src="/img/payment-method.png" alt="Payment Method" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="payment-security">
+                    <p>Secured By:</p>
+                    <img src="/img/godaddy.svg" alt="Payment Security" />
+                    <img src="/img/norton.svg" alt="Payment Security" />
+                    <img src="/img/ssl.svg" alt="Payment Security" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+
+<!-- Footer Bottom Start -->
+<div class="footer-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 copyright">
+                <p>Copyright &copy; <a href="https://htmlcodex.com">HTML Codex</a>. All Rights Reserved</p>
+            </div>
+
+            <div class="col-md-6 template-by">
+                <p>Template By <a href="https://htmlcodex.com">HTML Codex</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer Bottom End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/slick/slick.min.js"></script>
+
+
+<!-- Template Javascript -->
+<script src="/js/main.js"></script>
+<script>
+    function resetPageAndSubmit() {
+      const sortSelect = document.getElementById('sortSelect');
+      const sortOrderInput = document.getElementById('sortOrder');
+  
+      // Set the order value based on the selected sort option
+      if (sortSelect.value === 'alphabetical') {
+        sortOrderInput.value = sortSelect.options[sortSelect.selectedIndex].text.includes('A to Z') ? 1 : -1;
+      } else if (sortSelect.value === 'price') {
+        sortOrderInput.value = sortSelect.options[sortSelect.selectedIndex].text.includes('Low to High') ? 1 : -1;
+      } else {
+        sortOrderInput.value = -1; // Default to descending for other sort types
+      }
+  
+      document.getElementById('pageInput').value = 1; // Reset to first page when sorting changes
+      document.getElementById('sortForm').submit(); // Submit the form
+    }
+  </script>
+  <script>
+    function navigateToCategory() {
+        const form = document.getElementById('categoryForm');
+        const selectedCategory = document.getElementById('categorySelect').value;
+        form.action = `/singleCategoryProducts/${selectedCategory}`;
+        form.submit();
+    }
+</script>
+</body>
+</html>

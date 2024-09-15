@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>E Shop - Bootstrap Ecommerce Template</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="Bootstrap Ecommerce Template" name="keywords">
+        <meta content="Bootstrap Ecommerce Template Free Download" name="description">
+
+        <!-- Favicon -->
+        <link href="img/favicon.ico" rel="icon">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+
+        <!-- CSS Libraries -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="lib/slick/slick.css" rel="stylesheet">
+        <link href="lib/slick/slick-theme.css" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="/css/style.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <style>
+     .address-item {
+    margin-bottom: 1.5rem; /* Adjust this value as needed for spacing */
+    padding: 1rem; /* Optional: Adds padding inside each address item */
+    border: 1px solid #ddd; /* Optional: Adds a border around each address item */
+    border-radius: 0.25rem; /* Optional: Rounds the corners of the border */
+    background-color: #f9f9f9; /* Optional: Adds a background color */
+}
+.my-account .container {
+    padding-left: 5px; /* Adjust the left padding */
+    padding-right: 5px; /* Adjust the right padding */
+}
+</style>
+
+
+
+
+    <body>
+        <!-- Top Header Start -->
+        <div class="top-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <div class="logo">
+                            <a href="">
+                                <img src="/img/logo.png" alt="Logo">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="search">
+                            <input type="text" placeholder="Search">
+                            <button><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="user">
+                            <div class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account</a>
+                                <div class="dropdown-menu">
+                                    <a href="#" class="dropdown-item">Login</a>
+                                    <a href="#" class="dropdown-item">Register</a>
+                                </div>
+                            </div>
+                            <div class="cart">
+                                <i class="fa fa-cart-plus"></i>
+                                <span>(0)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Top Header End -->
+        
+        
+        <!-- Header Start -->
+        <div class="header">
+            <div class="container">
+                <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+                    <a href="#" class="navbar-brand">MENU</a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav m-auto">
+                            <a href="/" class="nav-item nav-link active">Home</a>
+                            <a href="product-list.html" class="nav-item nav-link">Products</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                                <div class="dropdown-menu">
+                                    <a href="product-list.html" class="dropdown-item">Product</a>
+                                    <a href="product-detail.html" class="dropdown-item">Product Detail</a>
+                                    <a href="cart.html" class="dropdown-item">Cart</a>
+                                    <a href="wishlist.html" class="dropdown-item">Wishlist</a>
+                                    <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                    <a href="login.html" class="dropdown-item">Login & Register</a>
+                                    <a href="my-account.html" class="dropdown-item">My Account</a>
+                                </div>
+                            </div>
+                            <a href="contact.html" class="nav-item nav-link">Contact Us</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Header End -->
+        
+        
+        <!-- Breadcrumb Start -->
+        <div class="breadcrumb-wrap">
+            <div class="container">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">User</a></li>
+                    <li class="breadcrumb-item active">My Account</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Breadcrumb End -->
+        
+        
+        <!-- My Account Start -->
+        <div class="my-account">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+                            <a class="nav-link active" id="dashboard-nav" data-toggle="pill" href="#dashboard-tab" role="tab">Dashboard</a>
+                            <a class="nav-link" id="orders-nav" data-toggle="pill" href="#orders-tab" role="tab">Orders</a>
+                            <a class="nav-link" id="payment-nav" data-toggle="pill" href="#coupon-tab" role="tab">Available Coupons</a>
+                            <a class="nav-link" id="address-nav" data-toggle="pill" href="#address-tab" role="tab">address</a>
+                            <a class="nav-link" id="account-nav" data-toggle="pill" href="#account-tab" role="tab">Account Details</a>
+                            <a class="nav-link" href="index.html">Logout</a>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="dashboard-tab" role="tabpanel" aria-labelledby="dashboard-nav">
+                                <h4>Dashboard</h4>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non. Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien eget arcu rhoncus scelerisque.
+                                </p> 
+                            </div>
+                            <div class="tab-pane fade" id="orders-tab" role="tabpanel" aria-labelledby="orders-nav">
+                                <% if (typeof orderCancelMessage !== 'undefined' && orderCancelMessage) { %>
+                                    <div class="alert alert-success">
+                                        <%= orderCancelMessage %>
+                                    </div>
+                                <% } %>
+                                <% if (typeof successMessage !== 'undefined' && successMessage) { %>
+                                    <div class="alert alert-success">
+                                        <%= successMessage %>
+                                    </div>
+                                <% } %>
+                                <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+                                    <div class="alert alert-success">
+                                        <%= errorMessage %>
+                                    </div>
+                                <% } %>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th style="width: 5%;">No</th>
+                                                <th style="width: 20%;">Product</th>
+                                                <th style="width: 15%;">Date</th>
+                                                <th style="width: 15%;">Price</th>
+                                                <th style="width: 15%;">Status</th>
+                                                <th style="width: 15%;">Image</th>
+                                                <th style="width: 7.5%;">Action</th>
+                                                <th style="width: 7.5%;">Action</th>
+                                                <th style="width: 7.5%;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% if (typeof orders !== 'undefined'&&orders.length > 0) { %>
+                                                <% orders.forEach((order, index) => { %>
+                                                    <% order.orderItems.forEach((item, itemIndex) => { %>
+                                                         <!-- Calculate the price after applying the discount -->
+                                                        <% 
+                                                           
+                                                            const discount = item.discountPercentage || 0;
+                                                            const discountedPrice = item.price - (item.price * (discount / 100));
+                                                        %>
+                                                        <tr>
+                                                            <td><%= index + 1 %></td>
+                                                            <td><%= item.name %></td>
+                                                            <td><%= order.createdAt.toDateString() %></td>
+                                                            <td>Rs <%= discountedPrice.toFixed(2) %></td>
+                                                            <% if (order.orderStatus === 'canceled') { %>
+                                                                <td style="color: red;"><%= order.orderStatus %></td>
+                                                            <% } else { %>
+                                                                <td><%= order.orderStatus %></td>
+                                                            <% } %>
+                                                            <td>
+                                                                <img src="/uploads/<%= item.image %>" alt="<%= item.name %>" style="width: 70px; height: 70px;">
+                                                            </td>
+                                                            <td>
+                                                                <form action="/viewSingleOrder/<%= order._id %>" method="GET" style="display:inline">
+                                                                    <button type="submit" class="btn btn-primary">View</button>
+                                                                </form>
+                                                            </td>
+                                                            <td>
+                                                                <!-- Cancel Order Form -->
+    <form action="/cancelOrder/<%= order._id %>?_method=delete" method="POST" style="display:inline;">
+        <button 
+            type="submit" 
+            class="btn btn-danger"
+            <% if (order.orderStatus === 'delivered' || order.orderStatus === 'canceled' || order.orderStatus === 'shipped') { %> 
+                disabled 
+            <% } %>
+        >
+            Cancel
+        </button>
+    </form>  
+                                                                
+                                                            </td>
+                                                            <td>
+                                                                <form action="/returnRequest" method="POST" style="display:inline;">
+                                                                    <!-- Hidden Inputs for essential variables -->
+                                                                    <input type="hidden" name="orderId" value="<%= order._id %>">
+                                                                    <input type="hidden" name="productId" value="<%= item.product._id %>">
+                                                                    <input type="hidden" name="userId" value="<%= order.user._id %>">
+                                                                    <button 
+                                                                        type="submit" 
+                                                                        class="btn btn-warning"
+                                                                        <% if (['processing', 'shipped', 'canceled'].includes(order.orderStatus)) { %> 
+                                                                            disabled 
+                                                                        <% } %>
+                                                                    >
+                                                                        Return
+                                                                    </button>
+                                                                </form>
+                                                                
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                    <% }) %>
+                                                <% }) %>
+                                            <% } else { %>
+                                                <tr>
+                                                    <td colspan="8" class="text-center">No orders found</td>
+                                                </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="tab-pane fade" id="coupon-tab" role="tabpanel" aria-labelledby="payment-nav">
+    <h4>Available Coupons</h4>
+    <% if (typeof coupons!=='undefined' && coupons.length > 0) { %>
+        <div class="row">
+            <% coupons.forEach(coupon => { %>
+                <div class="col-md-6">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title"><strong>Code:</strong> <%= coupon.code %></h5>
+                            <p class="card-text">
+                                <strong>Discount:</strong> <span class="badge badge-success"><%= coupon.discountPercentage %>%</span><br>
+                                <strong>Valid From:</strong> <%= new Date(coupon.startDate).toLocaleDateString() %> to <%= new Date(coupon.endDate).toLocaleDateString() %><br>
+                                <strong>Min Order Value:</strong> Rs <%= coupon.minOrderValue.toFixed(2) %><br>
+                                <strong>Usage Limit:</strong> <%= coupon.usageCount %> / <%= coupon.usageLimit %><br>
+                                <strong>Applicable Categories:</strong> 
+                                <% coupon.applicableCategories.forEach((category, index, array) => { %>
+                                    <%= category.name %><%= index < array.length - 1 ? ', ' : '' %>
+                                <% }); %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="alert alert-info" role="alert">
+            No coupons available at this time.
+        </div>
+    <% } %>
+</div>
+
+
+                            <div class="tab-pane fade" id="address-tab" role="tabpanel" aria-labelledby="address-nav">
+                                <div class="container">
+                                    <h5 style="color: rgba(2, 125, 207, 0.893); font-weight: 700;">Manage Your Addresses</h5>
+                            
+                                    <% if (typeof successMessage !== 'undefined' &&successMessage) { %>
+                                        <div class="alert alert-success">
+                                            <%= successMessage %>
+                                        </div>
+                                    <% } %>
+                            
+                                    <!-- Button to show the new address form -->
+                                    <button id="addNewAddressBtn" class="btn btn-primary" <% if (user.addresses.length >= 5) { %> hidden <% } %>>
+                                        Add New Address
+                                    </button>
+                            
+                                    <!-- New address form, hidden by default -->
+                                    <div id="newAddressForm" class="mt-4" style="display: none;">
+                                        <form action="/addAddress" method="POST">
+                                            <div class="form-group">
+                                                <label for="label">Label</label>
+                                                <select id="label" name="label" class="form-control" required>
+                                                    <option value="Home">Home</option>
+                                                    <option value="Work">Work</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </div>
+                            
+                                            <div class="form-group">
+                                                <label for="addressLine1">Address Line 1</label>
+                                                <input type="text" id="addressLine1" name="addressLine1" class="form-control" required>
+                                            </div>
+                            
+                                            <div class="form-group">
+                                                <label for="addressLine2">Address Line 2</label>
+                                                <input type="text" id="addressLine2" name="addressLine2" class="form-control">
+                                            </div>
+                            
+                                            <div class="form-group">
+                                                <label for="city">City</label>
+                                                <input type="text" id="city" name="city" class="form-control" required>
+                                            </div>
+                            
+                                            <div class="form-group">
+                                                <label for="State">State</label>
+                                                <input type="text" id="State" name="State" class="form-control">
+                                            </div>
+                            
+                                            <div class="form-group">
+                                                <label for="postalCode">Postal Code</label>
+                                                <input type="text" id="postalCode" name="postalCode" class="form-control" required>
+                                            </div>
+                            
+                                            <div class="form-group">
+                                                <label for="country">Country</label>
+                                                <input type="text" id="country" name="country" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phoneNo">Phone No</label>
+                                                <input type="number" id="phoneNo" name="phoneNo" class="form-control" required>
+                                            </div>
+                            
+                                            <button type="submit" class="btn btn-success">Save Address</button>
+                                        </form>
+                                    </div>
+                            
+                                    <!-- Edit address form, hidden by default -->
+                                    <div id="editAddressForm" class="mt-4" style="display: none;">
+                                        <h5 style="color: rgba(160, 60, 7, 0.893); font-weight: 700;">Edit Address</h5>
+                                        <form id="editAddressFormElement" method="POST">
+                                            <div class="form-group">
+                                                <label for="editLabel">Label</label>
+                                                <select id="editLabel" name="label" class="form-control" required>
+                                                    <option value="Home">Home</option>
+                                                    <option value="Work">Work</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </div>
+                            
+                                            <div class="form-group">
+                                                <label for="editAddressLine1">Address Line 1</label>
+                                                <input type="text" id="editAddressLine1" name="addressLine1" class="form-control" required>
+                                            </div>
+                            
+                                            <div class="form-group">
+                                                <label for="editAddressLine2">Address Line 2</label>
+                                                <input type="text" id="editAddressLine2" name="addressLine2" class="form-control">
+                                            </div>
+                            
+                                            <div class="form-group">
+                                                <label for="editCity">City</label>
+                                                <input type="text" id="editCity" name="city" class="form-control" required>
+                                            </div>
+                            
+                                            <div class="form-group">
+                                                <label for="editState">State</label>
+                                                <input type="text" id="editState" name="State" class="form-control">
+                                            </div>
+                            
+                                            <div class="form-group">
+                                                <label for="editPostalCode">Postal Code</label>
+                                                <input type="text" id="editPostalCode" name="postalCode" class="form-control" required>
+                                            </div>
+                            
+                                            <div class="form-group">
+                                                <label for="editCountry">Country</label>
+                                                <input type="text" id="editCountry" name="country" class="form-control" required>
+                                            </div>
+                            
+                                            <button type="submit" class="btn btn-success">Update Address</button>
+                                        </form>
+                                    </div>
+                            
+                                    <!-- Existing addresses -->
+                                    <br><br>
+                                    <div id="existingAddresses" class="mt-4">
+                                        <h5 style="color: rgba(160, 60, 7, 0.893); font-weight: 700;">Your Addresses</h5>
+                                        <% if (user.addresses.length === 0) { %>
+                                            <p>No addresses found.</p>
+                                        <% } else { %>
+                                            <div class="address-list">
+                                                <% user.addresses.forEach(function(address) { %>
+                                                    <div class="address-item mb-4"> <!-- Added mb-4 for margin-bottom -->
+                                                        <p><strong><%= address.label %> Address</strong></p>
+                                                        <p><%= address.addressLine1 %></p>
+                                                        <% if (address.addressLine2) { %>
+                                                            <p><%= address.addressLine2 %></p>
+                                                        <% } %>
+                                                        <p><%= address.city %>, <%= address.State %> - <%= address.postalCode %></p>
+                                                        <p><%= address.country %></p>
+                                                        <div class="address-actions">
+                                                            <a href="#" class="btn btn-info edit-address-btn" data-address-id="<%= address._id %>">Edit</a>
+                                                            <form action="/deleteAddress/<%= address._id %>?_method=delete" method="POST" style="display:inline;">
+                                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                <% }); %>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="account-tab" role="tabpanel" aria-labelledby="account-nav">
+                                <% if (typeof errorMessage !== 'undefined') { %>
+                                    <div class="alert alert-danger"><%= errorMessage %></div>
+                                  <% } %>
+                                  <% if (typeof successMessage !== 'undefined') { %>
+                                    <div class="alert alert-success"><%= successMessage %></div>
+                                  <% } %>
+                                <h4>Account Details</h4>
+                                <form action="/updateProfile/?_method=PUT" method="POST">
+                                <div class="row">
+                                   
+                                    <div class="col-md-6">
+                                        <input type="text" name="name" value="<%= formData && formData.name ? formData.name : user.name %>" >
+                                      </div>
+                                      
+                                      <div class="col-md-6">
+                                        <input type="text" name="mobile" value="<%= formData && formData.mobile ? formData.mobile : user.mobile %>">
+                                      </div>
+                                      
+                                      <div class="col-md-6">
+                                        <input type="text" name="email" value="<%= formData && formData.email ? formData.email : user.email %>">
+                                      </div>
+                                      
+                                    
+                                    <div class="col-md-12">
+                                        <button type="submit">Update Account</button>
+                                        <br><br>
+                                    </div>
+                                </div>
+                                </form>
+                                <h4>Password change</h4>
+                                <form action="/updatePassword/?_method=PUT" method="POST">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="password" placeholder="Current Password" name="oldPassword" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="password" placeholder="Enter New Password" name="newPassword" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="password" placeholder="Confirm Password" name="confirmPassword" required>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="submit">Save Changes</button>
+                                    </div>
+                                </div>
+                               </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- My Account End -->
+        
+        
+        <!-- Footer Start -->
+        <div class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-widget">
+                            <h1>E Shop</h1>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin rutrum massa. Suspendisse sollicitudin rutrum massa. Vestibulum porttitor, metus sed pretium elementum, nisi nibh sodales quam, non lobortis neque felis id mauris.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-widget">
+                            <h3 class="title">Useful Pages</h3>
+                            <ul>
+                                <li><a href="product.html">Product</a></li>
+                                <li><a href="product-detail.html">Product Detail</a></li>
+                                <li><a href="cart.html">Cart</a></li>
+                                <li><a href="checkout.html">Checkout</a></li>
+                                <li><a href="login.html">Login & Register</a></li>
+                                <li><a href="my-account.html">My Account</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-widget">
+                            <h3 class="title">Quick Links</h3>
+                            <ul>
+                                <li><a href="product.html">Product</a></li>
+                                <li><a href="cart.html">Cart</a></li>
+                                <li><a href="checkout.html">Checkout</a></li>
+                                <li><a href="login.html">Login & Register</a></li>
+                                <li><a href="my-account.html">My Account</a></li>
+                                <li><a href="wishlist.html">Wishlist</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-widget">
+                            <h3 class="title">Get in Touch</h3>
+                            <div class="contact-info">
+                                <p><i class="fa fa-map-marker"></i>123 E Shop, Los Angeles, CA, USA</p>
+                                <p><i class="fa fa-envelope"></i>email@example.com</p>
+                                <p><i class="fa fa-phone"></i>+123-456-7890</p>
+                                <div class="social">
+                                    <a href=""><i class="fa fa-twitter"></i></a>
+                                    <a href=""><i class="fa fa-facebook"></i></a>
+                                    <a href=""><i class="fa fa-linkedin"></i></a>
+                                    <a href=""><i class="fa fa-instagram"></i></a>
+                                    <a href=""><i class="fa fa-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row payment">
+                    <div class="col-md-6">
+                        <div class="payment-method">
+                            <p>We Accept:</p>
+                            <img src="/img/payment-method.png" alt="Payment Method" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="payment-security">
+                            <p>Secured By:</p>
+                            <img src="/img/godaddy.svg" alt="Payment Security" />
+                            <img src="/img/norton.svg" alt="Payment Security" />
+                            <img src="/img/ssl.svg" alt="Payment Security" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+
+        
+        <!-- Footer Bottom Start -->
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 copyright">
+                        <p>Copyright &copy; <a href="https://htmlcodex.com">HTML Codex</a>. All Rights Reserved</p>
+                    </div>
+
+                    <div class="col-md-6 template-by">
+                        <p>Template By <a href="https://htmlcodex.com">HTML Codex</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer Bottom End -->
+        
+        
+        <!-- Back to Top -->
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+        
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="/lib/easing/easing.min.js"></script>
+        <script src="/lib/slick/slick.min.js"></script>
+
+        
+        <!-- Template Javascript -->
+        <script src="/js/main.js"></script>
+      
+        <!-- JavaScript to handle form display and populating the edit form -->
+<script>
+    // Handle showing the new address form
+    document.getElementById('addNewAddressBtn').addEventListener('click', function() {
+        document.getElementById('newAddressForm').style.display = 'block';
+        document.getElementById('editAddressForm').style.display = 'none';
+    });
+
+    // Handle editing an address
+    document.querySelectorAll('.edit-address-btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();  // Prevent the default action
+
+            const addressId = this.getAttribute('data-address-id');
+            const addressItem = this.closest('.address-item');
+
+            // Populate the edit form with the existing address details
+            document.getElementById('editLabel').value = addressItem.querySelector('strong').textContent.split(' ')[0];
+            document.getElementById('editAddressLine1').value = addressItem.querySelectorAll('p')[1].textContent;
+            document.getElementById('editAddressLine2').value = addressItem.querySelectorAll('p')[2]?.textContent || '';
+            const cityStatePostal = addressItem.querySelectorAll('p')[3].textContent.split('-');
+            const [city, state] = cityStatePostal[0].trim().split(',');
+            document.getElementById('editCity').value = city.trim();
+            document.getElementById('editState').value = state.trim();
+            document.getElementById('editPostalCode').value = cityStatePostal[1].trim();
+            document.getElementById('editCountry').value = addressItem.querySelectorAll('p')[4].textContent;
+
+            // Set the form's action to update the specific address
+            document.getElementById('editAddressFormElement').action = `/updateAddress/${addressId}?_method=put`;
+
+            // Show the edit form and hide the new address form
+            document.getElementById('editAddressForm').style.display = 'block';
+            document.getElementById('newAddressForm').style.display = 'none';
+        });
+    });
+</script>
+
+          
+    </body>
+</html>
