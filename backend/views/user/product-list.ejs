@@ -159,9 +159,10 @@ bottom: 40px;
                                 
                     </div>
                     <div class="cart">
+                        <%   if(typeof cart!=='undefined'&&cart){%>
                         <a href="/myCart">
                             <i class="fa fa-cart-plus"></i>
-                           <%   if(typeof cart!=='undefined'&&cart){%>
+                          
                             <span>(<%= cart.totalQuantity %>)</span>
                             <% }  %>
                         </a>
@@ -191,12 +192,14 @@ bottom: 40px;
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                         <div class="dropdown-menu">
-                            <a href="product-list.html" class="dropdown-item">Product</a>
-                            <a href="product-detail.html" class="dropdown-item">Product Detail</a>
+                           
                             <a href="cart.html" class="dropdown-item">Cart</a>
                             <a href="/getUserWishlist" class="dropdown-item">Wishlist</a>
                             <a href="/getWallet" class="dropdown-item">Wallet</a>
-                            <a href="/register" class="dropdown-item">Login & Register</a>
+                            <% if(!user) {%>
+                            <a href="/renderLoginPage" class="dropdown-item">Login</a>
+                            <a href="/renderSignupPage" class="dropdown-item">Register</a>
+                            <% } %>
                             <a href="my-account.html" class="dropdown-item">My Account</a>
                         </div>
                     </div>
@@ -264,36 +267,28 @@ bottom: 40px;
                 <div class="feature-content">
                     <i class="fa fa-shield"></i>
                     <h2>Trusted Shopping</h2>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                    </p>
+                    
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 feature-col">
                 <div class="feature-content">
                     <i class="fa fa-shopping-bag"></i>
                     <h2>Quality Product</h2>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                    </p>
+                  
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 feature-col">
                 <div class="feature-content">
                     <i class="fa fa-truck"></i>
                     <h2>Worldwide Delivery</h2>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                    </p>
+                    
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 feature-col">
                 <div class="feature-content">
                     <i class="fa fa-phone"></i>
                     <h2>Telephone Support</h2>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                    </p>
+                   
                 </div>
             </div>
         </div>
@@ -480,9 +475,7 @@ bottom: 40px;
         <div class="col-lg-3 col-md-6">
             <div class="footer-widget">
                 <h1>E Shop</h1>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin rutrum massa. Suspendisse sollicitudin rutrum massa. Vestibulum porttitor, metus sed pretium elementum, nisi nibh sodales quam, non lobortis neque felis id mauris.
-                </p>
+                
             </div>
         </div>
 

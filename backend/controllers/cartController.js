@@ -67,6 +67,8 @@ exports.addItemToCart = catchAsyncErrors(async (req, res, next) => {
     
 
     if (cart) {
+     
+      
       const itemIndex = cart.items.findIndex(item => item.product._id.toString() === productId);
 
       if (itemIndex > -1) {
@@ -129,7 +131,8 @@ exports.addItemToCart = catchAsyncErrors(async (req, res, next) => {
       itemsPerPage,
       breadcrumbs,
       coupons,
-      selectedCouponCode:null 
+      selectedCouponCode:null,
+      message:null 
     });
   } catch (error) {
     next(error);
@@ -286,7 +289,7 @@ exports.updateCart = catchAsyncErrors(async (req, res, next) => {
   
       // Fetch product details for success message
       const product = await Product.findById(productId);
-      const successMessage = product ? `${product.name} has been deleted from the cart successfully` : 'Product has been deleted from the cart successfully';
+      const message = product ? `${product.name} has been deleted from the cart successfully` : 'Product has been deleted from the cart successfully';
   
       const coupons = await Coupon.find();
   
@@ -296,7 +299,7 @@ exports.updateCart = catchAsyncErrors(async (req, res, next) => {
         currentPage: page,
         totalPages,
         itemsPerPage,
-        successMessage,
+        message,
         selectedCouponCode:null ,
         coupons
       });

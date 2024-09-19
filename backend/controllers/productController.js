@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 dotenv.config({path:'backend/config/config.env'})
 
-
+const fs = require('fs');
 const Product=require('../models/productModel')
 const ErrorHandler = require('../utils/errorhandler')
 const catchAsyncErrors=require('../middleware/catchAsyncErrors')
@@ -45,20 +45,29 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     const resizedImages = [];
    
     
-
-    // Resize each uploaded file
+     
+   
+    
     if (req.files) {
-      for (let file of req.files) {
-        const outputFilePath = `backend/public/uploads/resized_${file.filename}`;
-        await sharp(file.path)
-          .resize(960, 760) 
-          .toFile(outputFilePath);
-        
-        resizedImages.push(`resized_${file.filename}`);
+      try {
+          const resizedImages = [];
+          for (let file of req.files) {
+              const outputFilePath = `backend/public/uploads/resized_${file.filename}`;
+              await sharp(file.path)
+                  .resize(960, 760) // Resize images
+                  .toFile(outputFilePath);
+                
+              resizedImages.push(`resized_${file.filename}`);
+              req.body.images=resizedImages
+          }
+          // Optionally: delete original files if not needed
+      } catch (error) {
+          console.error('Error processing images:', error);
       }
-      req.body.images = resizedImages;
-    }
-
+  }
+  
+     
+        
     // Fetch category details based on the provided category ID
     const categoryId = req.body.categoryId;
     const category = await Category.findById(categoryId);

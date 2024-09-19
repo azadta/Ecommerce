@@ -216,6 +216,7 @@ else {
         paidAt: Date.now(),
         user: req.user._id
     });
+    if (paymentInfo.id === 'EShop Wallet'){
     const wallet = await Wallet.findOne({ user: req.user._id });
       // Deduct the total price from wallet balance
       wallet.balance -= totalPrice;
@@ -228,6 +229,7 @@ else {
       });
   
       await wallet.save({ validateBeforeSave: false });
+    }
   
      
      // Increment the usage count and save the coupon

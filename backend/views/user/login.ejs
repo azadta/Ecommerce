@@ -113,10 +113,8 @@
         <div class="login">
             <div class="container">
                 <div class="section-header">
-                    <h3>User Registration & Login</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra at massa sit amet ultricies. Nullam consequat, mauris non interdum cursus
-                    </p>
+                    <h3>User Login</h3>
+                  
                 </div>
               
                  <body>
@@ -134,21 +132,21 @@
                       <br>
                    
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="login-form">
                             <form action="/login" method="POST">
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>E-mail</label>
-                                    <input class="form-control" type="email" placeholder="email" name="email"  required>
+                                    <input class="form-control" type="email" placeholder="email" name="email"  required style="width: 80%;">
                                 </div>
                                 <div class="col-md-6">
                                     <label>Password</label>
-                                    <input class="form-control" type="password" placeholder="Password" name="password"  required>
+                                    <input class="form-control" type="password" placeholder="Password" name="password"  required style="width: 80%;">
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="custom-control custom-checkbox">
-                                        <a href="/forgot">Forgot Password</a>
+                                <div class="col-md-12" >
+                                    <div class="custom-control custom-checkbox" >
+                                        <a href="/forgot" style="margin-left: -25px;">Forgot Password</a>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -158,44 +156,23 @@
                                 <br>
                                 <br>
                         
-                                <a href="/googleLogin">Or Log in with google</a>
+                                <a href="/googleLogin" style="margin-left: 12px;">Or Log in with google</a>
+                               
+                             
                             </div>
                         </form>
+                        <br>
+                   
                        
-                     
+                        <div>
+                            <p style="position: relative; right: 5px;">Don't have an account?<a href="/renderSignupPage">Signup</a></p>
+                        </div>
              
 
                         </div>
                     </div>
                     
-                    <div class="col-md-6">    
-                        <div class="register-form">
-                            <form action="/otpCreation" method="POST">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Name</label>
-                                    <input class="form-control" id="nameInput" type="text" placeholder="Name" name="name" value="<%= formData.name %>" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>E-Mail</label>
-                                    <input class="form-control" type="email" placeholder="E-Mail" name="email" required value="<%= formData.email %>">
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Pass Word</label>
-                                    <input class="form-control" type="password" placeholder="Password"  name="password" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Mobile No/(Optional)</label>
-                                    <input class="form-control" type="number" placeholder="Mobile No" name="mobile" value="<%= formData.mobile %>">
-                                </div>
-                                <div class="col-md-12">
-                                    <button class="btn" type="submit">Submit</button>
-                                </div>
-                              
-                            </div>
-                        </form>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>

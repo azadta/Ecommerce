@@ -11,6 +11,9 @@ const Category= require('../models/categoryModel')
 const Order=require('../models/orderModel')
 
 const Wallet = require('../models/walletModel');
+const Cart = require('../models/categoryModel');
+const Wishlist = require('../models/wishlistModel');
+
 
 
 
@@ -22,6 +25,11 @@ const Wallet = require('../models/walletModel');
 
 //Render registration Page
 exports.renderRegisterPage=catchAsyncErrors(async(req,res,next)=>{
+  res.render('signup',{message:null,errorMessage:null,successMessage:null,formData:{}})
+})
+
+//Render Login Page
+exports.renderLoginPage=catchAsyncErrors(async(req,res,next)=>{
   res.render('login',{message:null,errorMessage:null,successMessage:null,formData:{}})
 })
 
@@ -91,7 +99,8 @@ exports.renderGoogleLoginrPage=catchAsyncErrors(async(req,res,next)=>{
     }
 
     const otp = crypto.randomInt(100000, 999999).toString();
-    const otpExpires = Date.now() + 10 * 60 * 1000; // OTP expires in 10 minutes
+    const otpExpires = Date.now() +   60 * 1000; // OTP expires in 1 minutes
+    otpCreatedAt = Date.now(); // Set new OTP creation time
 
     const tempUser = await TempUser.create({
       name,
@@ -100,6 +109,7 @@ exports.renderGoogleLoginrPage=catchAsyncErrors(async(req,res,next)=>{
       mobile,
       otp,
       otpExpires,
+      otpCreatedAt,
       avatar: {
         public_id: "This is a sample id",
         url: "profilepicUrl"
@@ -111,6 +121,8 @@ exports.renderGoogleLoginrPage=catchAsyncErrors(async(req,res,next)=>{
       subject: 'OTP Verification',
       message: `Your OTP for registering on the Ecommerce Website is ${otp}`
     });
+   
+    
 
     res.status(200).render('otpVerification', {
       tempUser,
@@ -201,7 +213,13 @@ exports.renderGoogleLoginrPage=catchAsyncErrors(async(req,res,next)=>{
 
 
 const wallet = new Wallet({ user: user._id });
-await wallet.save();
+await wallet.save({ validateBeforeSave: false });
+
+
+
+const wishlist = new Wishlist({ user: user._id });
+await wishlist.save({ validateBeforeSave: false });
+
 
 
       sendToken(user,201,res)}
@@ -234,32 +252,57 @@ await wallet.save();
  
  
  exports.resendOTP = catchAsyncErrors(async (req, res, next) => {
-     const { email } = req.params;
- 
-     const tempUser = await TempUser.findOne({ email });
- 
-     if (!tempUser) {
-         return res.status(400).send('User not found');
-     }
- 
-     const otp = crypto.randomInt(100000, 999999).toString();
-     tempUser.otp = otp;
-     tempUser.otpExpires = Date.now() + 10 * 60 * 1000; // OTP expires in 10 minutes
- 
-     await tempUser.save();
- 
-     try {
-         await sendEmail({
-             email: tempUser.email,
-             subject: 'Resend OTP Verification',
-             message: `Your new OTP for registering on the Ecommerce Website is ${otp}`
-         });
- 
-         res.status(200).render('otpVerification',{tempUser,successMessage:`"A new OTP has been sent to the email you entered." `,errorMessage:null})
-     } catch (error) {
-         return next(new ErrorHandler(error.message, 500));
-     }
- });
+  const { email } = req.params;
+
+  // Find the user by email
+  const tempUser = await TempUser.findOne({ email });
+
+  // If user doesn't exist
+  if (!tempUser) {
+    return res.status(400).send('User not found');
+  }
+
+  // Check if 30 seconds have passed since the last OTP was created
+  const currentTime = Date.now();
+  const thirtySeconds = 30 *  1000; // 30 seconds in milliseconds
+
+  // If less than 30 minutes have passed since OTP creation
+  if (currentTime - tempUser.otpCreatedAt < thirtySeconds) {
+    return res.status(400).render('otpVerification', {
+      tempUser,
+      successMessage: null,
+      errorMessage: 'You can only resend OTP after 30 seconds.'
+    });
+  }
+
+  // If 30 minutes have passed, generate a new OTP
+  const otp = crypto.randomInt(100000, 999999).toString();
+  tempUser.otp = otp;
+  tempUser.otpExpires = Date.now() + 60 * 1000; // New OTP expires in 1 minute
+  tempUser.otpCreatedAt = Date.now(); // Set new OTP creation time
+
+  await tempUser.save();
+
+  // Send OTP email
+  try {
+    await sendEmail({
+      email: tempUser.email,
+      subject: 'Resend OTP Verification',
+      message: `Your new OTP for registering on the Ecommerce Website is ${otp}`
+    });
+
+    // Render the success message
+    res.status(200).render('otpVerification', {
+      tempUser,
+      successMessage: 'A new OTP has been sent to the email you entered.',
+      errorMessage: null
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+});
+
+
  
  
  

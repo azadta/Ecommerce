@@ -160,7 +160,12 @@ const addressSchema=new mongoose.Schema({
         type:Date,
         required: true,
         index: { expires: '10m' } // TTL index
-       } 
+       } ,
+       otpCreatedAt: {
+        type: Date,
+        default: Date.now
+      },
+      
       
        })
        
