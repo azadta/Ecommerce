@@ -6,6 +6,9 @@ const returnRequestSchema = new mongoose.Schema({
     order: { type: mongoose.Schema.Types.ObjectId, ref: 'Order', required: true },
     product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
     reason: { type: String },
+    quantity: { type: Number,required: true },
+    price: { type: Number,required: true },
+
     status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
     refundAmount: { type: Number, required: true },
     adminResponse: { type: String },

@@ -118,13 +118,18 @@
                 </div>
               
                  <body>
-                    <% if (successMessage) { %>
+                    <% if (typeof message!=="undefined" && message) { %>
+                        <div style="color: rgb(227, 49, 9); background-color: #dfd; border: 1px solid darkgreen; padding: 10px; border-radius: 5px; text-align: center;" >
+                          <%= message %>
+                        </div>
+                      <% } %>
+                    <% if (typeof successMessage!=="undefined" && successMessage) { %>
                         <div style="color: green; background-color: #dfd; border: 1px solid darkgreen; padding: 10px; border-radius: 5px;">
                           <%= successMessage %>
                         </div>
                       <% } %>
                       
-                      <% if (errorMessage) { %>
+                      <% if (typeof errorMessage !=='undefined'&&errorMessage) { %>
                         <div style="color: red; background-color: #fdd; border: 1px solid darkred; padding: 10px; border-radius: 5px;">
                           <%= errorMessage %>
                         </div>

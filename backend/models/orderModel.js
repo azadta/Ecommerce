@@ -56,6 +56,11 @@ const orderSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product',
       required: true
+    },
+    itemStatus: {
+      type: String,
+      enum: ['processing', 'canceled', 'delivered','returned'],
+      default: 'processing' // Default to 'processing' when the order is created
     }
   }],
   user: {

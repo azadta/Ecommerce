@@ -200,27 +200,33 @@
                   <input type="date" class="form-control form-control-lg" id="endDate" name="endDate" required value="<%= formData ? formData.endDate : (offer ? new Date(offer.endDate).toISOString().split('T')[0] : '') %>">
                 </div>
               
-                <!-- Products Selection -->
+                <!-- Offer Type -->
                 <div class="form-group">
+                  <label for="offerType">Offer Type:</label>
+                  <select class="form-control" id="offerType" name="offerType" required>
+                    <option value="">-- Select Offer Type --</option>
+                    <option value="product" <%= formData && formData.offerType === 'product' || (offer && offer.products.length > 0) ? 'selected' : '' %>>Product Offer</option>
+                    <option value="category" <%= formData && formData.offerType === 'category' || (offer && offer.category) ? 'selected' : '' %>>Category Offer</option>
+                  </select>
+                </div>
+              
+                <!-- Products Section (shown only for product offers) -->
+                <div id="productSection" class="form-group <%= formData && formData.offerType === 'product' || (offer && offer.products.length > 0) ? '' : 'd-none' %>">
                   <label for="products">Select Products:</label>
-                  <select class="form-control form-control-lg" id="products" name="products" multiple>
+                  <select class="form-control" id="products" name="products" multiple>
                     <% products.forEach(product => { %>
-                      <option value="<%= product._id %>" <%= (formData && formData.products && formData.products.includes(product._id.toString())) || (offer && offer.products.some(offerProduct => offerProduct.equals(product._id))) ? 'selected' : '' %>>
-                        <%= product.name %>
-                      </option>
+                      <option value="<%= product._id %>" <%= (formData && formData.products && formData.products.includes(product._id.toString())) || (offer && offer.products.some(offerProduct => offerProduct.equals(product._id))) ? 'selected' : '' %>><%= product.name %></option>
                     <% }) %>
                   </select>
                 </div>
               
-                <!-- Category Selection -->
-                <div class="form-group">
+                <!-- Category Section (shown only for category offers) -->
+                <div id="categorySection" class="form-group <%= formData && formData.offerType === 'category' || (offer && offer.category) ? '' : 'd-none' %>">
                   <label for="category">Select Category:</label>
-                  <select class="form-control form-control-lg" id="category" name="category">
-                    <option value="">None</option>
+                  <select class="form-control" id="category" name="category">
+                    <option value="">-- Select Category --</option>
                     <% categories.forEach(category => { %>
-                      <option value="<%= category._id %>" <%= (formData && formData.category && formData.category.equals(category._id)) || (offer && offer.category && offer.category.equals(category._id)) ? 'selected' : '' %>>
-                        <%= category.name %>
-                      </option>
+                      <option value="<%= category._id %>" <%= (formData && formData.category && formData.category.equals(category._id)) || (offer && offer.category && offer.category.equals(category._id)) ? 'selected' : '' %>><%= category.name %></option>
                     <% }) %>
                   </select>
                 </div>
@@ -231,10 +237,11 @@
                 </button>
               </form>
               
-            <br>
-            <form id="deleteForm" action="/admin/deleteOffer/<%= offer._id %>?_method=delete" method="post">
+              <br>
+              <form id="deleteForm" action="/admin/deleteOffer/<%= offer._id %>?_method=delete" method="post">
                 <button type="submit" class="btn btn-danger btn-lg" id="deleteButton">Delete Offer</button>
-            </form>
+              </form>
+              
 
             <br><br>
         </div> 
@@ -375,19 +382,41 @@
             }
         });
     </script>
-    <script>
-        document.getElementById('offerType').addEventListener('change', function() {
-            const type = this.value;
-            document.getElementById('additionalProducts').parentElement.style.display = type === 'product' ? 'block' : 'none';
-            document.getElementById('categories').parentElement.style.display = type === 'category' ? 'block' : 'none';
-        });
-    
-        document.addEventListener('DOMContentLoaded', () => {
-            const type = document.getElementById('offerType').value;
-            document.getElementById('additionalProducts').parentElement.style.display = type === 'product' ? 'block' : 'none';
-            document.getElementById('categories').parentElement.style.display = type === 'category' ? 'block' : 'none';
-        });
-    </script>
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const offerTypeSelect = document.getElementById('offerType');
+      const productSection = document.getElementById('productSection');
+      const categorySection = document.getElementById('categorySection');
+  
+      offerTypeSelect.addEventListener('change', function() {
+        const offerType = this.value;
+  
+        if (offerType === 'product') {
+          productSection.classList.remove('d-none');
+          categorySection.classList.add('d-none');
+          document.getElementById('category').value = ''; // Clear category selection
+        } else if (offerType === 'category') {
+          categorySection.classList.remove('d-none');
+          productSection.classList.add('d-none');
+          const productSelect = document.getElementById('products');
+          // Clear product selections
+          for (let i = 0; i < productSelect.options.length; i++) {
+            productSelect.options[i].selected = false;
+          }
+        } else {
+          productSection.classList.add('d-none');
+          categorySection.classList.add('d-none');
+          document.getElementById('category').value = ''; // Clear category selection
+          const productSelect = document.getElementById('products');
+          // Clear product selections
+          for (let i = 0; i < productSelect.options.length; i++) {
+            productSelect.options[i].selected = false;
+          }
+        }
+      });
+    });
+  </script>
+  
     
     
 </body>

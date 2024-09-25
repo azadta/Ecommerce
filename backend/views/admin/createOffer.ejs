@@ -119,6 +119,10 @@
         <div class="container">
             <h1 class="mt-4">Admin Dashboard</h1>
             <h1 class="mt-4">Create Offer</h1>
+            <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+                <h4 style="color:red;"><%= errorMessage %></h4>
+            <% } %>
+            
           
             <form action="/admin/createOffer" method="post">
                 <div class="form-group">

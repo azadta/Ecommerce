@@ -35,6 +35,14 @@
     padding-left: 5px; /* Adjust the left padding */
     padding-right: 5px; /* Adjust the right padding */
 }
+.bg-order-odd {
+    background-color: #f9f9f9; /* Light background color */
+}
+
+.bg-order-even {
+    background-color: #eff0db; /* Darker background color */
+}
+
 </style>
 
 
@@ -159,6 +167,11 @@
                                         <%= errorMessage %>
                                     </div>
                                 <% } %>
+                                <% if (typeof message !== 'undefined' && message) { %>
+                                    <div class="alert alert-success" style="text-align: center;">
+                                        <%= message %>
+                                    </div>
+                                <% } %>
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
                                         <thead class="thead-dark">
@@ -168,86 +181,102 @@
                                                 <th style="width: 15%;">Date</th>
                                                 <th style="width: 15%;">Quantity</th>
                                                 <th style="width: 15%;">Price</th>
-                                                <th style="width: 15%;">Status</th>
+                                                <th style="width: 15%;">Order Status</th>
                                                 <th style="width: 15%;">Image</th>
-                                                <th style="width: 7.5%;">Action</th>
-                                                <th style="width: 7.5%;">Action</th>
-                                                <th style="width: 7.5%;">Action</th>
+                                                <th style="width: 7.5%;">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <% if (typeof orders !== 'undefined'&&orders.length > 0) { %>
+                                            <% if (typeof orders !== 'undefined' && orders.length > 0) { %>
                                                 <% orders.forEach((order, index) => { %>
+                                                    <% let firstItem = true; %> <!-- To check the first item of each order -->
+                                                     
+                                                     <!-- Alternate row background color using index (for entire order) -->
+                                                     <% const orderClass = index % 2 === 0 ? 'bg-order-odd' : 'bg-order-even'; %>
+                                    
                                                     <% order.orderItems.forEach((item, itemIndex) => { %>
-                                                         <!-- Calculate the price after applying the discount -->
-                                                        <% 
-                                                           
-                                                            const discount = item.discountPercentage || 0;
-                                                            const discountedPrice = item.price - (item.price * (discount / 100));
-                                                        %>
-                                                        <tr>
-                                                            <td><%= order._id %></td>
-                                                            <td><%= item.name %></td>
-                                                            <td><%= order.createdAt.toDateString() %></td>
-                                                            <td><%= item.quantity %></td>
-                                                            <td>Rs <%= discountedPrice.toFixed(2) %></td>
-                                                            <% if (order.orderStatus === 'canceled') { %>
-                                                                <td style="color: red;"><%= order.orderStatus %></td>
+                                                        <% const discount = item.discountPercentage || 0; %>
+                                                        <% const discountedPrice = item.price - (item.price * (discount / 100)); %>
+                                                        <tr class="<%= orderClass %>">
+                                                            <!-- Merge the order ID, Date, Order Status, and Action buttons in the first row of each order -->
+                                                            <% if (firstItem) { %>
+                                                                <td rowspan="<%= order.orderItems.length %>"><%= order._id %></td>
+                                                                <td><%= item.name %></td>
+                                                                <td rowspan="<%= order.orderItems.length %>"><%= order.createdAt.toDateString() %></td>
+                                                                <% if (item.itemStatus === 'canceled' || item.itemStatus === 'returned') { %>
+                                                                    <td>
+                                                                        <%= item.quantity %>
+                                                                        <p style="color: red;">(Item <%= item.itemStatus %>)</p>
+                                                                    </td>
+                                                                <% } else { %>
+                                                                    <td><%= item.quantity %></td>
+                                                                <% } %>
+                                                                
+                                                                <td>Rs <%= discountedPrice.toFixed(2) %></td>
+                                                                <!-- Merge the order status row based on order ID -->
+                                                                <td rowspan="<%= order.orderItems.length %>" 
+                                                                    style="<%= order.orderStatus === 'canceled' || order.orderStatus === 'returned' ? 'color: red;' : '' %>">
+                                                                    <%= order.orderStatus %>
+                                                                </td>
+                                                                <td>
+                                                                    <img src="/uploads/<%= item.image %>" alt="<%= item.name %>" style="width: 70px; height: 70px;">
+                                                                </td>
+                                                                <td rowspan="<%= order.orderItems.length %>">
+                                                                    <form action="/viewSingleOrder/<%= order._id %>" method="GET" style="display:inline">
+                                                                        <button type="submit" class="btn btn-primary">View</button>
+                                                                    </form>
+                                                                    <br>
+                                                                    <br>
+                                                                    <form action="/renderCancelItemPage/<%= order._id %>" method="get" style="display:inline;">
+                                                                        <button 
+                                                                            type="submit" 
+                                                                            class="btn btn-danger"
+                                                                            <% if (order.orderStatus === 'delivered' || order.orderStatus === 'canceled' || order.orderStatus === 'shipped' || order.orderStatus === 'returned') { %> 
+                                                                                disabled 
+                                                                            <% } %>
+                                                                        >
+                                                                            Cancel
+                                                                        </button>
+                                                                    </form>
+                                                                    <br>
+                                                                    <br>
+                                                                    <form action="/renderReturnItemPage/<%= order._id %>" method="get" style="display:inline;">
+                                                                        <button 
+                                                                            type="submit" 
+                                                                            class="btn btn-warning"
+                                                                            <% if (order.orderStatus !== 'delivered' ) { %> 
+                                                                                disabled 
+                                                                            <% } %>
+                                                                        >
+                                                                            Return
+                                                                        </button>
+                                                                    </form>
+                                                                </td>
+                                                                <% firstItem = false; %> <!-- Mark that we handled the first item for this order -->
                                                             <% } else { %>
-                                                                <td><%= order.orderStatus %></td>
+                                                                <!-- For subsequent items, only show product-related details without the buttons -->
+                                                                <td><%= item.name %></td>
+                                                                <td>
+                                                                    <% if (item.quantity === 0) { %>
+                                                                        <p><%=item.quantity %></p>
+                                                                        <span style="color: red;"> (Item Canceled)</span>
+                                                                    <% } else { %>
+                                                                        <%= item.quantity %>
+                                                                    <% } %>
+                                                                </td>
+                                                                <td>Rs <%= discountedPrice.toFixed(2) %></td>
+                                                                <td>
+                                                                    <img src="/uploads/<%= item.image %>" alt="<%= item.name %>" style="width: 70px; height: 70px;">
+                                                                </td>
                                                             <% } %>
-                                                            <td>
-                                                                <img src="/uploads/<%= item.image %>" alt="<%= item.name %>" style="width: 70px; height: 70px;">
-                                                            </td>
-                                                            <td>
-                                                                <form action="/viewSingleOrder/<%= order._id %>" method="GET" style="display:inline">
-                                                                    <button type="submit" class="btn btn-primary">View</button>
-                                                                </form>
-                                                            </td>
-                                                            <td>
-                                                                <!-- Cancel Order Form -->
-    <form action="/cancelOrder/<%= order._id %>?_method=delete" method="POST" style="display:inline;">
-        <button 
-            type="submit" 
-            class="btn btn-danger"
-            <% if (order.orderStatus === 'delivered' || order.orderStatus === 'canceled' || order.orderStatus === 'shipped') { %> 
-                disabled 
-            <% } %>
-        >
-            Cancel
-        </button>
-    </form>  
-                                                                
-                                                            </td>
-                                                            <td>
-                                                                <form action="/returnRequest" method="POST" style="display:inline;">
-                                                                    <!-- Hidden Inputs for essential variables -->
-                                                                    <input type="hidden" name="orderId" value="<%= order._id %>">
-                                                                    <input type="hidden" name="productId" value="<%= item.product._id %>">
-                                                                    <input type="hidden" name="userId" value="<%= order.user._id %>">
-                                                                    <button 
-                                                                        type="submit" 
-                                                                        class="btn btn-warning"
-                                                                        <% if (['processing', 'shipped', 'canceled'].includes(order.orderStatus)) { %> 
-                                                                            disabled 
-                                                                        <% } %>
-                                                                    >
-                                                                        Return
-                                                                    </button>
-                                                                </form>
-                                                                
-                                                                
-                                                            </td>
                                                         </tr>
-                                                    <% }) %>
-                                                <% }) %>
-                                            <% } else { %>
-                                                <tr>
-                                                    <td colspan="8" class="text-center">No orders found</td>
-                                                </tr>
+                                                    <% }); %>
+                                                <% }); %>
                                             <% } %>
                                         </tbody>
                                     </table>
+                                    
+                                    
                                 </div>
                             </div>
                             
@@ -429,6 +458,9 @@
                             </div>
                             
                             <div class="tab-pane fade" id="account-tab" role="tabpanel" aria-labelledby="account-nav">
+                                <% if (typeof message !== 'undefined' && message) { %>
+                                    <div class="alert alert-danger"><%= message %></div>
+                                  <% } %>
                                 <% if (typeof errorMessage !== 'undefined') { %>
                                     <div class="alert alert-danger"><%= errorMessage %></div>
                                   <% } %>
@@ -448,7 +480,7 @@
                                       </div>
                                       
                                       <div class="col-md-6">
-                                        <input type="text" name="email" value="<%= formData && formData.email ? formData.email : user.email %>">
+                                        <input type="text" name="email" value="<%= formData && formData.email ? formData.email : user.email %>" disabled>
                                       </div>
                                       
                                     

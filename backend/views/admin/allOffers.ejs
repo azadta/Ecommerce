@@ -71,7 +71,7 @@
 
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav m-auto">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
+                        <a href="/" class="nav-item nav-link active">Home</a>
                         <a href="product-list.html" class="nav-item nav-link">Products</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
@@ -132,9 +132,10 @@
             
             <div class="container">
                 <h3 class="mt-4">All Offers</h3>
-                <% if (message) { %>
+                <% if (typeof message!=='undefined'&& message ) { %>
                     <h4 style="color: blue;"><%= message %></h4>
                 <% } %>
+            
                 
                 <table class="table table-striped mt-4">
                     <thead>
@@ -156,7 +157,7 @@
                                 <td><%= new Date(offer.startDate).toLocaleDateString() %></td>
                                 <td><%= new Date(offer.endDate).toLocaleDateString() %></td>
                                 <td>
-                                    <form action="/admin/singleOfferDetails" method="POST" style="display:inline;">
+                                    <form action="/admin/getSingleOffer" method="POST" style="display:inline;">
                                         <input type="hidden" name="offerId" value="<%= offer._id %>">
                                         <button type="submit" class="btn btn-danger btn-sm">Edit</button>
                                     </form>

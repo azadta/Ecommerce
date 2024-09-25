@@ -41,7 +41,7 @@ const productSchema = new mongoose.Schema({
     },
     stock: {
         type: Number,
-        max: [999, "Stock cannot exceed 4 characters"],
+        max: [9999, "Stock cannot exceed 4 characters"],
         min: [1, 'Stock must be at least 1'],
         default: 1
     },

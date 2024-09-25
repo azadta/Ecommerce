@@ -20,6 +20,20 @@ const Wallet=require('../models/walletModel')
 
 
 
+exports.renderCancelItemPage=catchAsyncErrors(async(req,res,next)=>{
+    const order=await Order.findById(req.params.id).populate("")
+
+res.render('cancelOrder',{order,message:null})
+
+})
+
+
+exports.renderReturnItemPage=catchAsyncErrors(async(req,res,next)=>{
+    const order=await Order.findById(req.params.id).populate("")
+
+res.render('returnOrder',{order,message:null})
+
+})
 
 
 
@@ -46,7 +60,7 @@ exports.getCheckoutPage = catchAsyncErrors(async (req, res, next) => {
   const addresses = req.user.addresses || []; // If no addresses, return an empty array
 
   // List of available payment methods (could be dynamic)
-  const paymentMethods = ["COD", "CreditCard", "PayPal","EShop Wallet"];
+  const paymentMethods = ["COD",  "PayPal","EShop Wallet"];
   const shippingCostINR = parseFloat(req.body.shippingCost) || 0; 
   const couponDiscountINR = parseFloat(req.body.couponDiscount) || 0; 
 
@@ -489,50 +503,136 @@ exports.updateOrderStatus = async (req, res) => {
 
     })
 
-    //cancel Order
 
-    exports.cancelOrder = async (req, res, next) => {
+
+
+
+    
+    
+    
+    
+    //Cancel Items
+
+    exports.cancelItem = async (req, res, next) => {
         try {
-            const order = await Order.findById(req.params.id).populate('orderItems.product');
-    
+            const order = await Order.findById(req.params.id).populate('couponCode'); // Populate couponCode to access coupon details
             if (!order) {
-                return res.status(404).json({ message: 'Order not found' });
+                throw new Error('Order not found');
             }
     
-            
+            const quantities = req.body.quantities; // quantities object from form
+            let canceledItems = []; // To store canceled item names and quantities
+            let totalQuantity = 0; // Total quantity after cancellation
+            let totalItemPrice = 0; // Total items price after cancellation
     
-            order.orderStatus = 'canceled';
-
-             // If there's a coupon associated with the order, decrement its usage count
-             if (order.couponCode) {
-            const coupon = await Coupon.findOne({ code: order.couponCode });
-            if (coupon) {
-                coupon.usageCount -= 1;
-                await coupon.save({ validateBeforeSave: false });
+            // Iterate over each product ID in req.body.quantities
+            for (const productId in quantities) {
+                if (quantities.hasOwnProperty(productId)) {
+                    const cancelQuantity = parseInt(quantities[productId]);
+    
+                    // Find the item in the order
+                    const item = order.orderItems.find(item => item.product._id.toString() === productId);
+    
+                    if (!item) {
+                        throw new Error('Product not found in this order');
+                    }
+    
+                    // Check if item has enough quantity to cancel
+                    if (cancelQuantity >= item.quantity) {
+                        // Set item status to 'canceled' if all quantities are canceled
+                        item.itemStatus = 'canceled';
+                        canceledItems.push(`${item.name} (${item.quantity} canceled)`); // Add to the canceled items list
+                        item.quantity = 0; // Set quantity to 0 if all items are canceled
+                    } else {
+                        // Reduce the quantity if canceling only a portion of the order
+                        item.quantity -= cancelQuantity;
+                        canceledItems.push(`${item.name} (${cancelQuantity} canceled)`); // Add to the canceled items list
+                    }
+    
+                    // Adjust stock for the canceled quantity
+                    const product = await Product.findById(item.product);
+                    product.stock += cancelQuantity; // Add back the canceled quantity to stock
+                    await product.save();
+    
+                    // Updating order fields
+                    let canceledAmount = item.price * cancelQuantity;
+                    order.itemsPrice -= canceledAmount; // Adjust items price
+                    totalItemPrice += item.price * item.quantity; // Update the total item price after cancellations
+                    totalQuantity += item.quantity; // Update total quantity
+    
+                    if (order.shippingPrice && order.shippingPrice > 0) {
+                        order.shippingPrice -= cancelQuantity * 50; // Example of adjusting shipping price (optional)
+                        order.totalPrice -= canceledAmount + (cancelQuantity * 50); // Adjust total price
+                    } else {
+                        order.totalPrice -= canceledAmount; // Adjust total price
+                    }
+                }
             }
-        }
-
-              // Increase the stock for each product in the order
-              order.orderItems.forEach(async (item) => {
-                item.product.stock += item.quantity; // Increase the stock by the quantity in the order
-                await item.product.save(); // Save the updated product
-            });
-
-
+    
+            // Recalculate coupon discount proportionally if there's still a coupon applied
+            if (order.couponCode) {
+                const coupon = order.couponCode;
+    
+                // Check if the remaining items' price exceeds the minimum order value
+                if (order.itemsPrice >= coupon.minOrderValue) {
+                    // Proportionally recalculate the coupon discount based on the remaining items price
+                    const originalItemsPrice = order.itemsPrice + totalItemPrice; // Assuming totalItemPrice holds original items price before cancellation
+                    const discountAmount = (coupon.discountPercentage / 100) * order.itemsPrice;
+    
+                    // Adjust the discount proportionally to the remaining items
+                    const proportionalDiscount = (discountAmount / originalItemsPrice) * order.itemsPrice;
+                    order.couponDiscount = proportionalDiscount;
+    
+                    // Recalculate the total price after applying the new proportional coupon discount
+                    order.totalPrice = order.itemsPrice + order.shippingPrice - order.couponDiscount;
+                } else {
+                    // If the order items price is below the minimum order value, remove the coupon discount
+                    order.couponDiscount = 0;
+                    order.totalPrice = order.itemsPrice + order.shippingPrice;
+                }
+            }
+    
+            // Check if all items in the order are canceled to update the overall order status
+            const allItemsCanceled = order.orderItems.every(item => item.itemStatus === 'canceled');
+            if (allItemsCanceled) {
+                order.orderStatus = 'canceled'; // If all items are canceled, set the order status to 'canceled'
+    
+                // If there's a coupon associated with the order, decrement its usage count
+                if (order.couponCode) {
+                    const coupon = await Coupon.findOne({ code: order.couponCode.code });
+                    if (coupon) {
+                        coupon.usageCount -= 1;
+                        await coupon.save({ validateBeforeSave: false });
+                    }
+                }
+            }
+    
+            // Save the updated order
             await order.save();
-          
-            
-           
-             const orders = await Order.find({ user: req.user._id }).populate('orderItems.product');
-             const orderCancelMessage=`Your order with Id: ${order._id} has been cancelled Successfully`
     
-            res.render('my-account',{user:req.user,formData:null,address:null,successMessage:null,orders,orderCancelMessage}); // Redirect to the orders page after canceling
+            // Generate a message with canceled items and their quantities
+            const message = `Canceled items: ${canceledItems.join(', ')}`;
+            res.status(200).redirect(`/me?message=${encodeURIComponent(message)}`);
+    
         } catch (error) {
-            return next(error);
+            const message = error.message;
+            const order = await Order.findById(req.params.id);
+            res.render('cancelOrder', { message, order });
         }
     };
+    
+    
+    
+    
+    
 
 
+
+
+
+
+
+    
     // Get Single Order Details
 exports.getSingleOrderDetails = async (req, res, next) => {
   
@@ -666,7 +766,8 @@ try{
 
     const orders = await Order.find({
         "paymentInfo.status": "COMPLETED",
-        'paidAt':{$gte:start,$lte:end}
+        'paidAt':{$gte:start,$lte:end},
+        'orderStatus': { $nin: ['canceled', 'returned'] } // Exclude canceled or returned orders
     }).populate('orderItems.product')
     .skip(resultsPerPage * (page - 1))
     .limit(resultsPerPage);
@@ -974,63 +1075,105 @@ try{
 
 
 
-//Create Return Request
-
-exports.createReturnRequest = async (req, res, next) => {
+// Submit return request for specific items in the order
+exports.submitReturnRequest = async (req, res, next) => {
     try {
         const userId = req.user._id;
-        const { orderId, productId, reason } = req.body;
+        const orderId = req.params.id;
+        const { quantities, reasons } = req.body; // Quantities and reasons from the form
 
-        // Find the order and check if the product exists in it
-        const order = await Order.findOne({ _id: orderId, user: userId });
+        // Find the order for the user and populate the coupon code
+        const order = await Order.findOne({ _id: orderId, user: userId }).populate('couponCode');
         if (!order) {
             return res.status(404).json({ success: false, message: 'Order not found' });
         }
 
-        const productIndex = order.orderItems.findIndex(item => item.product._id.toString() === productId);
-        if (productIndex === -1) {
-            return res.status(404).json({ success: false, message: 'Product not found in this order' });
+        // Initialize discount details
+        let discountPercentage = 0;
+
+        // Check if there is a coupon applied to the order
+        if (order.couponCode) {
+            // Find the corresponding coupon from the Coupon model
+            const coupon = await Coupon.findOne({ code: order.couponCode });
+        
+            // Since the coupon was valid when applied, directly get the discount percentage
+            discountPercentage = coupon.discountPercentage;
         }
 
-        const returnedItem = order.orderItems[productIndex];
+        // Loop through the returned items and create return requests
+        const returnRequests = [];
+        for (const productId in quantities) {
+            const quantityToReturn = parseInt(quantities[productId]);
+            const reasonForReturn = reasons[productId];
 
-        if (returnedItem.status === 'returned') {
-            return res.status(400).json({ success: false, message: 'Product already returned' });
+            // Find the item in the order
+            const productIndex = order.orderItems.findIndex(item => item.product._id.toString() === productId);
+            if (productIndex === -1 || quantityToReturn <= 0) {
+                continue; // Skip if product is not found or invalid quantity
+            }
+
+            const returnedItem = order.orderItems[productIndex];
+
+            // Check if there are any pending return requests for this item
+            const pendingReturnRequests = await ReturnRequest.find({
+                order: orderId,
+                product: productId,
+                status: { $in: ['pending', 'approved'] } // Only count pending or approved returns
+            });
+
+            // Calculate the total quantity already requested for return
+            const alreadyRequestedQuantity = pendingReturnRequests.reduce((sum, req) => sum + req.quantity, 0);
+
+            // Calculate the remaining quantity available for return
+            const remainingQuantity = returnedItem.quantity - alreadyRequestedQuantity;
+
+            // If no quantity left to return, skip the item
+            if (remainingQuantity <= 0) {
+                continue;
+            }
+
+            // Ensure we don't return more than the remaining quantity
+            const actualQuantityToReturn = Math.min(quantityToReturn, remainingQuantity);
+
+            // If actual quantity to return is 0, skip
+            if (actualQuantityToReturn <= 0) {
+                continue;
+            }
+
+            // Calculate the original price for the returned quantity
+            const originalRefundAmount = returnedItem.price * actualQuantityToReturn;
+
+            // Apply the coupon discount percentage to the refund amount
+            const discountedRefundAmount = originalRefundAmount * (1 - discountPercentage / 100);
+
+            // Create a new return request for the product
+            const returnRequest = await ReturnRequest.create({
+                user: userId,
+                order: orderId,
+                product: productId,
+                reason: reasonForReturn,
+                refundAmount: discountedRefundAmount,
+                quantity: actualQuantityToReturn,
+                price: returnedItem.price,
+            });
+            returnRequests.push(returnRequest);
         }
 
-        // Check if a return request for this product in this order already exists
-        const existingReturnRequest = await ReturnRequest.findOne({
-            user: userId,
-            order: orderId,
-            product: productId
-        });
-
-        if (existingReturnRequest) {
-            const product = await Product.findById(productId);
-            const successMessage = `Your return request for the ${product.name} has been already submitted`;
-           return res.status(201).redirect(`/me?successMessage=${encodeURIComponent(successMessage)}`);
+        if (returnRequests.length > 0) {
+            const successMessage = `Your return request has been submitted for ${returnRequests.length} item(s).`;
+            return res.status(201).redirect(`/me?successMessage=${encodeURIComponent(successMessage)}`);
+        } else {
+            return res.redirect(`/me?message=${encodeURIComponent('No valid items for return')}`);
         }
-
-        // Calculate refund amount
-        const refundAmount = returnedItem.price;
-
-        // Create a new return request
-        const returnRequest = await ReturnRequest.create({
-            user: userId,
-            order: orderId,
-            product: productId,
-            reason,
-            refundAmount
-        });
-
-        const product = await Product.findById(productId);
-        const successMessage = `Your return request for the ${product.name} has been submitted`;
-
-        res.status(201).redirect(`/me?successMessage=${encodeURIComponent(successMessage)}`);
     } catch (error) {
         next(error);
     }
 };
+
+
+
+
+
 
 
 
@@ -1041,6 +1184,8 @@ exports.createReturnRequest = async (req, res, next) => {
 exports.getReturnRequests = async (req, res, next) => {
     try {
         const returnRequests = await ReturnRequest.find().populate('user order product');
+    
+        
         res.render('returnRequests', { returnRequests });
     } catch (error) {
         next(error);
@@ -1048,7 +1193,10 @@ exports.getReturnRequests = async (req, res, next) => {
 };
 
 
-//Handle return request--- admin
+//Handle return requist-- Admin
+
+// Utility function to round a value to two decimal places
+const roundToTwoDecimals = (value) => Math.round(value * 100) / 100;
 
 exports.handleReturnRequest = async (req, res, next) => {
     try {
@@ -1058,6 +1206,8 @@ exports.handleReturnRequest = async (req, res, next) => {
         if (!returnRequest) {
             return res.status(404).json({ success: false, message: 'Return request not found' });
         }
+
+        const order = returnRequest.order;
 
         if (action === 'approve') {
             // Approve return
@@ -1070,8 +1220,70 @@ exports.handleReturnRequest = async (req, res, next) => {
                 `Refund for returned product #${returnRequest.product._id} from order #${returnRequest.order._id}`
             );
 
-            // Restock the product
-            await Product.findByIdAndUpdate(returnRequest.product._id, { $inc: { stock: 1 } });
+            // Restock the returned quantity of the product
+            const quantityToRestock = returnRequest.quantity;
+            await Product.findByIdAndUpdate(
+                returnRequest.product._id,
+                { $inc: { stock: quantityToRestock } }
+            );
+
+            // Update the corresponding order item and check if it should be fully canceled
+            const orderItemIndex = order.orderItems.findIndex(item => item.product._id.toString() === returnRequest.product._id.toString());
+            if (orderItemIndex !== -1) {
+                const orderItem = order.orderItems[orderItemIndex];
+
+                // Deduct the returned quantity from the order item
+                orderItem.quantity -= quantityToRestock;
+
+                const returnedAmount = returnRequest.price * returnRequest.quantity;
+
+                // Adjust prices and ensure they are properly rounded
+                order.itemsPrice = roundToTwoDecimals(order.itemsPrice - returnedAmount);
+
+                if (order.shippingPrice && order.shippingPrice > 0) {
+                    order.shippingPrice = roundToTwoDecimals(order.shippingPrice - (returnRequest.quantity * 50));
+                    order.totalPrice = roundToTwoDecimals(order.totalPrice - (returnRequest.refundAmount + (returnRequest.quantity * 50)));
+                } else {
+                    order.totalPrice = roundToTwoDecimals(order.totalPrice - returnRequest.refundAmount);
+                }
+
+                // Check if the item is fully returned
+                if (orderItem.quantity <= 0) {
+                    orderItem.itemStatus = 'returned';
+                }
+
+                // Check if all items in the order are returned/canceled
+                const allItemsReturned = order.orderItems.every(item => item.itemStatus === 'returned');
+                if (allItemsReturned) {
+                    order.orderStatus = 'returned';
+                }
+            }
+
+            // Handle coupon discount adjustments
+            let discountPercentage = 0;
+
+            // Check if there is a coupon applied to the order
+            if (order.couponCode) {
+                const coupon = await Coupon.findOne({ code: order.couponCode });
+                discountPercentage = coupon.discountPercentage;
+            }
+
+            // Calculate the coupon discount for the returned item
+            let couponDiscountForReturnedItem = 0;
+            const returnedAmount = returnRequest.price * returnRequest.quantity;
+            if (discountPercentage > 0) {
+                couponDiscountForReturnedItem = roundToTwoDecimals((discountPercentage / 100) * returnedAmount);
+            }
+
+            // Subtract the coupon discount for the returned item from the total order's coupon discount
+            order.couponDiscount = roundToTwoDecimals(order.couponDiscount - couponDiscountForReturnedItem);
+
+            // Ensure couponDiscount does not go below 0
+            if (order.couponDiscount < 0) {
+                order.couponDiscount = 0;
+            }
+
+            await order.save(); // Save the updated order
 
             // Send approval confirmation email
             const emailOptions = {
@@ -1097,14 +1309,22 @@ exports.handleReturnRequest = async (req, res, next) => {
             await sendEmail(emailOptions);
         }
 
-        await returnRequest.save();
-        const returnRequests = await ReturnRequest.find().populate('order product');
+        await returnRequest.save(); // Save the return request updates
 
+        // Retrieve all return requests for rendering
+        const returnRequests = await ReturnRequest.find().populate('order product');
         res.status(200).render('returnRequests', { returnRequests });
+
     } catch (error) {
-        next(error);
+        next(error); // Handle errors
     }
 };
+
+
+
+
+
+
 
 
 

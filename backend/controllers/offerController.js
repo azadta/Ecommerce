@@ -143,12 +143,14 @@ exports.getSingleOfferDetails = catchAsyncErrors(async (req, res, next) => {
 
 exports.updateOffer = catchAsyncErrors(async (req, res, next) => {
   try {
-    const { offerId, name, discountPercentage, startDate, endDate, products, category, removeProducts, additionalProducts } = req.body;
+    const { offerId, name, discountPercentage, startDate, endDate, products, category, offerType, removeProducts } = req.body;
 
+    // Validate discount percentage
     if (discountPercentage < 0 || discountPercentage > 100) {
       throw new Error('Discount percentage must be between 0 and 100');
     }
 
+    // Validate date range
     if (new Date(startDate) > new Date(endDate)) {
       throw new Error('Start date must be before end date');
     }
@@ -165,25 +167,65 @@ exports.updateOffer = catchAsyncErrors(async (req, res, next) => {
     offer.discountPercentage = discountPercentage;
     offer.startDate = startDate;
     offer.endDate = endDate;
-    offer.category = category || offer.category; // Update category if provided
 
-    // Remove products from offer
-    if (removeProducts && Array.isArray(removeProducts)) {
-      removeProducts.forEach(productId => {
-        offer.products.pull(productId);
-      });
+    let productIds = []; // Array to track products linked to the offer
+
+    // If the offer type is 'product'
+    if (offerType === 'product') {
+      // Clear the associated category since we are now dealing with individual products
+      offer.category = null;
+
+      // Handle removal of specified products
+      if (removeProducts && Array.isArray(removeProducts)) {
+        // Remove the old offer from the removed products
+        await Product.updateMany(
+          { _id: { $in: removeProducts } },
+          { $pull: { offers: offer._id } }
+        );
+        // Update the offer's product list
+        removeProducts.forEach(productId => {
+          offer.products.pull(productId);
+        });
+      }
+
+      // Add new products to the offer
+      if (products && Array.isArray(products)) {
+        products.forEach(productId => {
+          if (!offer.products.includes(productId)) {
+            offer.products.push(productId);
+          }
+        });
+      }
+
+      productIds = offer.products; // Keep track of current products linked to this offer
+
+    } else if (offerType === 'category' && category) {
+      // If the offer type is 'category'
+      offer.products = []; // Clear products for category offers
+      offer.category = category; // Set new category
+
+      // Fetch all products under the selected category
+      const productsInCategory = await Product.find({ categoryId: category });
+      productIds = productsInCategory.map(product => product._id);
+
+      // Add all products in the selected category to the offer
+      offer.products = productIds;
     }
 
-    // Add additional products to offer
-    if (products && Array.isArray(products)) {
-      products.forEach(productId => {
-        if (!offer.products.includes(productId)) {
-          offer.products.push(productId);
-        }
-      });
-    }
-
+    // Save the updated offer
     await offer.save();
+
+    // Remove the offer from old products (not in the updated product list)
+    await Product.updateMany(
+      { offers: offer._id, _id: { $nin: productIds } }, // Products that have this offer but are no longer part of the offer
+      { $pull: { offers: offer._id } } // Remove the offer from them
+    );
+
+    // Add the offer to the new products
+    await Product.updateMany(
+      { _id: { $in: productIds } },
+      { $addToSet: { offers: offer._id } } // Add the offer to the new products
+    );
 
     // Fetch updated offer, products, and categories
     const updatedOffer = await Offer.findById(offerId).populate('products').populate('category');
@@ -191,7 +233,9 @@ exports.updateOffer = catchAsyncErrors(async (req, res, next) => {
     const allCategories = await Category.find();
 
     const message = `${offer.name} has been updated successfully`;
-    const offers=await Offer.find()
+    const offers = await Offer.find();
+
+    // Render the updated offer page
     res.render('allOffers', {
       offer: updatedOffer,
       products: allProducts,
@@ -201,10 +245,9 @@ exports.updateOffer = catchAsyncErrors(async (req, res, next) => {
       message,
       offers
     });
-  
+
   } catch (error) {
-     
-    // Find the offer by ID and populate products and category
+    // Handle errors and render the error page
     const offer = await Offer.findById(req.body.offerId)
       .populate('products')
       .populate('category');
@@ -217,14 +260,19 @@ exports.updateOffer = catchAsyncErrors(async (req, res, next) => {
     const products = await Product.find();
     const categories = await Category.find();
     console.error('Error updating offer:', error);
-    res.status(500).render('singleOffer', { 
-      formData: req.body, 
-      products: await Product.find(), 
-      categories: await Category.find(),
+
+    res.status(500).render('singleOffer', {
+      formData: req.body,
+      products,
+      categories,
       errorMessage: error.message || 'An error occurred'
     });
   }
 });
+
+
+
+
 
 
 

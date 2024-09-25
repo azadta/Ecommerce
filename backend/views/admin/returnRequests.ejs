@@ -114,49 +114,55 @@
  <!-- views/admin/returnRequests.ejs -->
 
     
-    <table class="table table-bordered table-hover table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th>User</th>
-                <th>Order ID</th>
-                <th>Product</th>
-                <th></th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% returnRequests.forEach(request => { %>
-            <tr>
-                <td><%= request.user.name %></td>
-                <td><%= request.order._id %></td>
-                <td><%= request.product.name %></td>
-                <td><%= request.reason %></td>
-                <td>
-                    <span class="badge badge-<%= request.status === 'pending' ? 'warning' : (request.status === 'approved' ? 'success' : 'danger') %>">
-                        <%= request.status.charAt(0).toUpperCase() + request.status.slice(1) %>
-                    </span>
-                </td>
-                <td>
-                    <% if (request.status === 'pending') { %>
-                    <form action="/admin/handleReturnRequest" method="POST" class="d-flex flex-column">
-                        <input type="hidden" name="requestId" value="<%= request._id %>">
-                        <div class="btn-group mb-2">
-                            <button type="submit" name="action" value="approve" class="btn btn-success btn-sm">Approve</button>
-                            <button type="submit" name="action" value="reject" class="btn btn-danger btn-sm">Reject</button>
-                        </div>
-                        <textarea class="form-control" name="adminResponse" placeholder="Reason for rejection (if applicable)"></textarea>
-                    </form>
-                    <% } else { %>
-                    <span class="text-<%= request.status === 'approved' ? 'success' : 'danger' %>">
-                        <%= request.status === 'approved' ? 'Approved' : 'Rejected' %>
-                    </span>
-                    <% } %>
-                </td>
-            </tr>
-            <% }); %>
-        </tbody>
-    </table>
+ <table class="table table-bordered table-hover table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>User</th>
+            <th>Order ID</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Reason</th>
+            <th>Refund Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% returnRequests.forEach(request => { %>
+        <tr>
+            <td><%= request.user.name %></td>
+            <td><%= request.order._id %></td>
+            <td><%= request.product.name %></td>
+            <td><%= request.quantity %></td>
+            <td><%= request.price %></td>
+            <td><%= request.reason %></td>
+            <td>Rs <%= request.refundAmount.toFixed(2) %></td>
+            <td>
+                <span class="badge badge-<%= request.status === 'pending' ? 'warning' : (request.status === 'approved' ? 'success' : 'danger') %>">
+                    <%= request.status.charAt(0).toUpperCase() + request.status.slice(1) %>
+                </span>
+            </td>
+            <td>
+                <% if (request.status === 'pending') { %>
+                <form action="/admin/handleReturnRequest" method="POST" class="d-flex flex-column">
+                    <input type="hidden" name="requestId" value="<%= request._id %>">
+                    <div class="btn-group mb-2">
+                        <button type="submit" name="action" value="approve" class="btn btn-success btn-sm">Approve</button>
+                        <button type="submit" name="action" value="reject" class="btn btn-danger btn-sm">Reject</button>
+                    </div>
+                    <textarea class="form-control" name="adminResponse" placeholder="Reason for rejection (if applicable)"></textarea>
+                </form>
+                <% } else { %>
+                <span class="text-<%= request.status === 'approved' ? 'success' : 'danger' %>">
+                    <%= request.status === 'approved' ? 'Approved' : 'Rejected' %>
+                </span>
+                <% } %>
+            </td>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>
 </div>
 
 

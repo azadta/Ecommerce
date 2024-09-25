@@ -464,7 +464,7 @@ await wishlist.save({ validateBeforeSave: false });
   
             const user=await User.findOne({email:req.body.email})
             if(!user){
-              const message="User not found"
+              const message="User not found with entered email"
 
               return res.status(404).render('login',{message})
            
@@ -507,6 +507,7 @@ await wishlist.save({ validateBeforeSave: false });
           
          //Reset password 
          exports.resetPassword=catchAsyncErrors(async(req,res,next)=>{
+          try{
           
           
           //creating token hash
@@ -521,18 +522,35 @@ await wishlist.save({ validateBeforeSave: false });
           })
   
           if(!user){
-            return next(new ErrorHandler("Reset password token is invalid or has been expired",400)) 
+            throw new Error("Reset password token is invalid or has been expired")
+            
           }
   
           if(req.body.password!==req.body.confirmPassword){
-            return next(new ErrorHandler("conformed password doesnot match",400)) 
+            throw new Error("conformed password doesnot match")
+            
             
           }
           user.password=req.body.password
           user.resetPasswordToken=undefined
           user.resetPasswordExpire=undefined
           await user.save()
-          sendToken(user,200,res)
+          sendToken(user,200,res)}
+          catch(error){
+
+            let message = 'An error occurred';
+  if (error.errors) {
+    // Extract and format validation errors
+    const errorMessages = Object.values(error.errors).map(err => err.message);
+    message = errorMessages.join(', ');
+  } else {
+    message = error.message;
+  }
+  const {token}=req.params
+  res.render('resetPassword',{message,token});
+
+
+          }
   
   
         }) 
@@ -553,16 +571,18 @@ await wishlist.save({ validateBeforeSave: false });
           }).populate('applicableCategories', 'name');
           const successMessage=req.query.successMessage
           errorMessage=req.query.errorMessage
+          message=req.query.message
           
           
   
-             res.status(200).render('my-account',{user,formData:null,address:null,successMessage,orders,orderCancelMessage:null,coupons,errorMessage})
+             res.status(200).render('my-account',{user,formData:null,address:null,successMessage,orders,orderCancelMessage:null,coupons,errorMessage,message})
             })
              
           
          
   // Update User Password
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
+  try{
   const user = await User.findById(req.user.id).select("+password");
 
   if (!user) {
@@ -574,28 +594,39 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
 
   if (!isPasswordMatched) {
     req.errorContext = { user: req.user }
-    return next(new ErrorHandler("Old password is incorrect", 400, 'my-account'));
+    throw new Error("Old password is incorrect")
+    
   }
 
   if (req.body.newPassword !== req.body.confirmPassword) {
     req.errorContext = { user: req.user }
-    return next(new ErrorHandler("Please ensure the confirmation password matches your first new password entry.", 400, 'my-account'));
+    throw new Error("Please ensure the confirmation password matches your first new password entry.")
+    
   }
 
   user.password = req.body.newPassword;
 
   // Validate user data before saving
-  const validationError = user.validateSync();
-  if (validationError) {
-    const messages = Object.values(validationError.errors).map(val => val.message).join('. ');
-    req.errorContext = { user: req.user }
-    return next(new ErrorHandler(messages, 400, 'my-account'));
-  }
 
   // Save user if validation passes
   await user.save();
   const successMessage=`User password has been updated success fully`
- res.render('my-account',{user,successMessage,formData:{}})
+ res.render('my-account',{user,successMessage,formData:{}})}
+ catch(error){
+  let message = 'An error occurred';
+  if (error.errors) {
+    // Extract and format validation errors
+    const errorMessages = Object.values(error.errors).map(err => err.message);
+    message = errorMessages.join(', ');
+  } else {
+    message = error.message;
+  }
+  res.redirect(`/me?message=${encodeURIComponent(message)}`);
+
+  
+
+
+ }
  
 });
 
