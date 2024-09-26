@@ -744,10 +744,13 @@ try{
             start=new Date(now.getFullYear(),0,1) // Start of the year
             end=new Date(now.getFullYear(),11,31)//End of the year
             break;
-        case 'custom':
-            start=new Date(startDate)
-            end=new Date(endDate)
-            break;
+            case 'custom':
+                start = new Date(startDate);
+                end = new Date(endDate);
+                // Set the end date to 23:59:59.999 to capture the entire day
+                end.setHours(23, 59, 59, 999);
+                break;
+            
         default:
             start=new Date(0)//Beginning of the time if no filterr applied
             end=new Date()//Now    
@@ -764,26 +767,30 @@ try{
         }
              
 
-    const orders = await Order.find({
-        "paymentInfo.status": "COMPLETED",
-        'paidAt':{$gte:start,$lte:end},
-        'orderStatus': { $nin: ['canceled', 'returned'] } // Exclude canceled or returned orders
-    }).populate('orderItems.product')
-    .skip(resultsPerPage * (page - 1))
-    .limit(resultsPerPage);
+        const orders = await Order.find({
+            "paymentInfo.status": { $regex: "^completed$", $options: "i" }, // Case-insensitive search for 'completed'
+            'paidAt': { $gte: start, $lte: end },
+            'orderStatus': { $nin: ['canceled', 'returned'] } // Exclude canceled or returned orders
+        })
+        .populate('orderItems.product')
+        .skip(resultsPerPage * (page - 1))
+        .limit(resultsPerPage);
+        
         
        
     //Aggregating the data
 
     const allOrders = await Order.find({
     
-       'paidAt':{$gte:start,$lte:end}
+       'paidAt':{$gte:start,$lte:end},
+       'orderStatus': { $nin: ['canceled', 'returned'] } // Exclude canceled or returned orders
    }).populate('orderItems.product')
 
    const allOrdersTotalAmount= allOrders.reduce((sum,order)=>sum+order.totalPrice,0)
 
     const ordersWithoutPagination = await Order.find({
-       "paymentInfo.status": "COMPLETED",
+        "paymentInfo.status": { $regex: "^completed$", $options: "i" }, // Case-insensitive search for 'completed'
+        'orderStatus': { $nin: ['canceled', 'returned'] }, // Exclude canceled or returned orders
        'paidAt':{$gte:start,$lte:end}}).populate('orderItems.product')
 
     const salesCount=ordersWithoutPagination.length
