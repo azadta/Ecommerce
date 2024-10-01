@@ -82,7 +82,7 @@ exports.addItemToCart = catchAsyncErrors(async (req, res, next) => {
           product: productId,
           quantity: parsedQuantity,
           price: discountedPrice,
-          total: parsedQuantity * discountedPrice
+          total:Math.round(parsedQuantity * discountedPrice*100)/100
         });
       }
     } else {

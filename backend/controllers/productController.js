@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-dotenv.config({path:'backend/config/config.env'})
+dotenv.config({path:'./config/config.env'})
 
 const fs = require('fs');
 const Product=require('../models/productModel')
@@ -52,7 +52,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
       try {
           const resizedImages = [];
           for (let file of req.files) {
-              const outputFilePath = `backend/public/uploads/resized_${file.filename}`;
+              const outputFilePath = `./public/uploads/resized_${file.filename}`;
               await sharp(file.path)
                   .resize(960, 760) // Resize images
                   .toFile(outputFilePath);

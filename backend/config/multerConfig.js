@@ -5,7 +5,7 @@ const crypto = require('crypto');
 // Configure storage for multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'backend/public/uploads/');
+    cb(null, './public/uploads/');
   },
   filename: (req, file, cb) => {
     // Generate a unique filename using a combination of timestamp and random bytes

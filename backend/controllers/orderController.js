@@ -1055,13 +1055,13 @@ try{
             } else if (format === 'pdf') {
                 // Generate PDF Report using EJS template
                 const templatePath = path.join(__dirname, '../views/admin/salesReport.ejs');
-    
+                     
                 const html = await ejs.renderFile(templatePath, {
                     salesCount,
                     totalOrderAmount,
                     totalDiscount,
                     totalCouponDiscount,
-                    orders,
+                    orders:ordersWithoutPagination,
                     currentPage: parseInt(page),
                     totalPages: Math.ceil(salesCount / resultsPerPage),
                     period,
@@ -1073,10 +1073,11 @@ try{
     
                 const browser = await puppeteer.launch({
                     headless: true,
-                    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+			args: ['--no-sandbox', '--disable-setuid-sandbox'],
+                   
                     timeout: 60000,
                 });
-    
+                           
                 const pdfPage = await browser.newPage();
                 await pdfPage.setContent(html, { waitUntil: 'domcontentloaded' });
     
@@ -1093,7 +1094,7 @@ try{
                 res.end(pdfBuffer);
             }
         } catch (error) {
-            return res.redirect('/salesReport?message=An error occurred while downloading the sales report.');
+            return res.redirect('/salesReport?errorMessage=An error occurred while downloading the sales report.');
         }
     });
 
