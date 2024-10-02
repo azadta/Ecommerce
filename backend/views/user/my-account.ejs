@@ -259,7 +259,7 @@
                                                                 <td>
                                                                     <% if (item.quantity === 0) { %>
                                                                         <p><%=item.quantity %></p>
-                                                                        <span style="color: red;"> (Item Canceled)</span>
+									<span style="color: red;"> (Item <%=item.itemStatus %>)</span>
                                                                     <% } else { %>
                                                                         <%= item.quantity %>
                                                                     <% } %>

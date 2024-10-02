@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
+const path = require('path');
 // Load environment variables from .env file
-dotenv.config({path:'backend/config/config.env'})
+dotenv.config({ path: path.join(__dirname, 'config.env') });
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const {User} = require('../models/userModel'); // Adjust the path according to your User model

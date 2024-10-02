@@ -948,7 +948,8 @@ try{
             .limit(resultsPerPage);
     
             const ordersWithoutPagination = await Order.find({
-                'paymentInfo.status': "COMPLETED",
+                "paymentInfo.status": { $regex: "^completed$", $options: "i" }, // Case-insensitive search for 'completed'
+                'orderStatus': { $nin: ['canceled', 'returned'] }, // Exclude canceled or returned orders
                 'paidAt': { $gte: start, $lte: end }
             }).populate('orderItems.product');
     
@@ -1073,9 +1074,9 @@ try{
     
                 const browser = await puppeteer.launch({
                     headless: true,
-			args: ['--no-sandbox', '--disable-setuid-sandbox'],
+			args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-extensions', '--disable-gpu'],
                    
-                    timeout: 60000,
+                     timeout: 120000,
                 });
                            
                 const pdfPage = await browser.newPage();
@@ -1285,7 +1286,7 @@ exports.handleReturnRequest = async (req, res, next) => {
                 }
 
                 // Check if all items in the order are returned/canceled
-                const allItemsReturned = order.orderItems.every(item => item.itemStatus === 'returned');
+                const allItemsReturned = order.orderItems.every(item => item.itemStatus === 'returned'|| item.itemStatus === 'canceled');
                 if (allItemsReturned) {
                     order.orderStatus = 'returned';
                 }
